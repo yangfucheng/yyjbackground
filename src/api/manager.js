@@ -32,3 +32,21 @@ export function detail(params) {
     params: params
   })
 }
+
+
+export function check(params) {
+  return request({
+    url: '/backend/project/result/check',
+    method: 'post',
+    data: params
+  })
+}
+
+export function result(params) {
+  return request({
+    url: '/backend/project/result',
+    method: 'post',
+    data: params
+  })
+}
+

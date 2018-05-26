@@ -78,9 +78,9 @@
         <el-form :model="dialogForm">
           
           <el-form-item label="交易代币" :label-width="formLabelWidth">
-            <el-select v-model="dialogForm.tradeCoin" placeholder="请选择活动区域">
+            <el-select v-model="dialogForm.tradeCoin" placeholder="请选择交易代币">
               <el-option label="GXS" value="GXS"></el-option>
-              <el-option label="fps" value="fps"></el-option>
+              <el-option label="PPS" value="PPS"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="投注上限" :label-width="formLabelWidth">

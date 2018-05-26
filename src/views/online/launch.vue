@@ -28,8 +28,11 @@
           </el-form-item>
       <el-form-item label="关键词">
         <el-select v-model="form.tag" placeholder="请选择关键词">
-          <el-option label="体育" value="ty"></el-option>
-          <el-option label="金融" value="code"></el-option>
+          <el-option label="推荐" value=""></el-option>
+          <el-option label="金融" value="finance"></el-option>
+          <el-option label="体育" value="pe"></el-option>
+          <el-option label="娱乐" value="entertainment"></el-option>
+          <el-option label="其他" value="other"></el-option>
            <!--  <el-option label="我的" value="mine"></el-option> -->
         </el-select>
       </el-form-item>

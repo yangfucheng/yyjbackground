@@ -45,6 +45,21 @@
           {{scope.row.status | changStatus}}
         </template>
       </el-table-column>
+        <el-table-column prop="optionA" label="选项A" sortable width="180">
+        <template slot-scope="scope">
+          {{scope.row.optionA }}
+        </template>
+      </el-table-column>
+        <el-table-column prop="optionB" label="选项B" sortable width="180">
+        <template slot-scope="scope">
+          {{scope.row.optionB }}
+        </template>
+      </el-table-column>
+        <el-table-column prop="optionC" label="选项C" sortable width="180">
+        <template slot-scope="scope">
+          {{scope.row.optionC }}
+        </template>
+      </el-table-column>
        <el-table-column prop="voteEndTime" label="结束时间" sortable width="180">
         <template slot-scope="scope">
           {{scope.row.betEndTime | changeTime}}
@@ -60,12 +75,13 @@
           {{scope.row.resultUrl }}
         </template>
       </el-table-column>
-      <el-table-column label="操作"  width="120">
+      <el-table-column label="操作"  width="120" >
       <template slot-scope="scope">
-        <el-button @click.native.prevent="dialogFormVisible=true" type="text" size="small">
+        <el-button @click.native.prevent="resulte(scope.row)" type="text" size="small" v-show="scope.row.result==null">
           输入结果
+            <!-- {{scope.row.resultUrl }} -->
         </el-button>
-        <el-button @click.native.prevent="" type="text" size="small">
+        <el-button @click.native.prevent="check(scope.row)" type="text" size="small" v-show="scope.row.status!='complete'">
           审核
         </el-button>
       </template>
@@ -79,24 +95,48 @@
     </el-pagination>
     <div class="dialog">
       <el-dialog title="结果输入/审核" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
+        <el-form :model="list">
           <el-form-item label="正确选项" :label-width="formLabelWidth">
-            <el-select v-model="form.region" placeholder="请选择结果">
+            <el-select v-model="option" placeholder="请选择结果">
               <el-option label="A" value="A"></el-option>
               <el-option label="B" value="B"></el-option>
+              <el-option label="C" value="C" v-show="disable"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button type="primary" @click="submit">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
+
+    <div class="dialog">
+      <el-dialog title="结果输入/审核" :visible.sync="dialogFormVisible1">
+        <el-form :model="list">
+            <el-form-item label="" :label-width="formLabelWidth">
+             <b>上个管理员选择了</b> <span>:{{optionCheck}}</span>
+            </el-form-item>
+          <el-form-item label="正确选项" :label-width="formLabelWidth">
+            <el-select v-model="optionCh" placeholder="请选择结果">
+              <el-option label="A" value="A"></el-option>
+              <el-option label="B" value="B"></el-option>
+              <el-option label="C" value="C" v-show="disable"></el-option>
+            </el-select>
+          </el-form-item>
+
+        
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="onSubmit">确 定</el-button>
         </div>
       </el-dialog>
     </div>
   </div>
 </template>
 <script>
-  import { getManageList } from '../../api/manager.js'
+  import { getManageList,check,result } from '../../api/manager.js'
   import { timestampToTime,getNameById,OrderStatus } from '../../utils/enum.js'
   export default {
     props: {
@@ -116,11 +156,18 @@
 
         },
         dialogFormVisible:false,
+        dialogFormVisible1:false,
         pageNum:1,
         list:[],
         per_page:1,
         total:1,
-        formLabelWidth:'100px'
+        option:'',
+        optionC:'',
+        optionCh:'',
+        disable:false,
+        projectId:'',
+        formLabelWidth:'100px',
+        optionCheck:''
       }
     },
     created() {
@@ -154,7 +201,20 @@
 
         getManageList(params).then(response =>{
           this.list = response.body.result;
+          // alert(this.list[0].optionC);
         })
+      },
+      check(row){
+        this.dialogFormVisible1 =true;
+        this.optionCheck = row.result;
+        this.projectId = row.id;
+      },
+      resulte(row){
+        this.dialogFormVisible =true;
+        this.projectId = row.id;
+        if(row.optionC){
+          this.disable = true;
+        }
       },
       handleCurrentChange(val){ 
         this.pageNum = val;
@@ -162,6 +222,30 @@
       },
       onSubmit() {
         console.log('submit!');
+        var params ={
+          projectId:this.projectId,
+          result:this.optionCh
+        }
+        check(params).then(response=>{
+            this.$message({
+              message: 'Ye,输入结果成功了哟',
+              type: 'success'
+            });
+            this.fetch();
+        })
+      },
+      submit(){
+        var params ={
+          projectId:this.projectId,
+          result:this.option
+        }
+        result(params).then(response=>{
+            this.$message({
+              message: 'Yep,审核成功了哟',
+              type: 'success'
+            });
+            this.fetch();
+        })
       }
     }
   }

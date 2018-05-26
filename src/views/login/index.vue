@@ -43,6 +43,7 @@ var qs=require("qs");
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
+      // alert(value)
       if (!isvalidUsername(value)) {
         callback(new Error('请输入正确的用户名'))
       } else {

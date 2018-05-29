@@ -128,7 +128,7 @@
         var params = {
           tradeCoin:this.formInline.tradeCoin,
           title:this.formInline.title,
-          page:this.pageNum,
+          pageNo:this.pageNum,
           type:'index',
           // status:'online'
           status:this.formInline.state
@@ -143,12 +143,12 @@
 
         getManageList(params).then(response =>{
           this.list = response.body.result;
-
+          this.total =response.body.totalCount;
         })
       },
       handleCurrentChange(val){ 
         this.pageNum = val;
-        this.fetchData();
+        this.fetch();
       },
       dblclickOnRow(row){
         this.$router.push({

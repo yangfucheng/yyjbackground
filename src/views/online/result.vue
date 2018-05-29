@@ -88,7 +88,7 @@
     </el-table-column>
     </el-table>
     <el-pagination @current-change="handleCurrentChange" :current-page="pageNum"
-      :page-sizes="[15]"
+      :page-sizes="[20]"
       :page-size="per_page"
       layout="total, sizes, prev, pager, next, jumper"
       :total='total'>
@@ -186,7 +186,7 @@
         var params = {
           tradeCoin:this.formInline.tradeCoin,
           title:this.formInline.title,
-          page:this.pageNum,
+          pageNo:this.pageNum,
           type:'wait_result',
           // status:'online'
           status:this.formInline.state
@@ -201,6 +201,7 @@
 
         getManageList(params).then(response =>{
           this.list = response.body.result;
+          this.total =response.body.totalCount;
           // alert(this.list[0].optionC);
         })
       },
@@ -218,7 +219,7 @@
       },
       handleCurrentChange(val){ 
         this.pageNum = val;
-        this.fetchData();
+        this.fetch();
       },
       onSubmit() {
         console.log('submit!');

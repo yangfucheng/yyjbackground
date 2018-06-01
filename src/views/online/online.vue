@@ -44,6 +44,21 @@
           {{scope.row.initiatorRole}}
         </template>
       </el-table-column>
+        <el-table-column prop="optionA" label="选项A" sortable show-overflow-tooltip>
+        <template slot-scope="scope">
+          {{scope.row.optionA }}
+        </template>
+      </el-table-column>
+        <el-table-column prop="optionB" label="选项B" sortable show-overflow-tooltip>
+        <template slot-scope="scope">
+          {{scope.row.optionB }}
+        </template>
+      </el-table-column>
+        <el-table-column prop="optionC" label="选项C" sortable show-overflow-tooltip>
+        <template slot-scope="scope">
+          {{scope.row.optionC }}
+        </template>
+      </el-table-column>
        </el-table-column>
        <el-table-column prop="voteEndTime" label="投票结束时间" sortable width="180">
         <template slot-scope="scope">
@@ -64,6 +79,9 @@
         <el-button @click.native.prevent="" type="text" size="small">
           详情
         </el-button>
+         <el-button @click.native.prevent="befor(scope.row,'项目作废','3')" type="text" size="small" v-show="scope.row.status!='complete' && scope.row.status!='cancel'">
+          项目作废
+        </el-button>
       </template>
     </el-table-column>
     </el-table>
@@ -81,6 +99,21 @@
             <el-select v-model="dialogForm.tradeCoin" placeholder="请选择交易代币">
               <el-option label="GXS" value="GXS"></el-option>
               <el-option label="PPS" value="PPS"></el-option>
+              <el-option label="ACT" value="ACT"></el-option>
+              <el-option label="ATM" value="ATM"></el-option>
+              <el-option label="BCDN" value="BCDN"></el-option>
+              <el-option label="BIG" value="BIG"></el-option>
+              <el-option label="CANDY" value="CANDY"></el-option>
+              <el-option label="CRE" value="CRE"></el-option>
+              <el-option label="EKT" value="EKT"></el-option>
+              <el-option label="KCASH" value="KCASH"></el-option>
+              <el-option label="MAG" value="MAG"></el-option>
+              <el-option label="MDS" value="MDS"></el-option>
+              <el-option label="NULS" value="NULS"></el-option>
+              <el-option label="STC" value="STC"></el-option>
+              <el-option label="SWTC" value="SWTC"></el-option>
+              <el-option label="UIP" value="UIP"></el-option>
+              <el-option label="XAS" value="XAS"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="投注上限" :label-width="formLabelWidth">
@@ -114,13 +147,27 @@
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="onSubmit" >确 定</el-button>
         </div>
+
       </el-dialog>
     </div>
+
+     <el-dialog title="项目作废" :visible.sync="dialogFormVisible2">
+    <el-form >
+      <el-form-item label="项目作废原因" :label-width="formLabelWidth">
+        <el-input v-model="beforeReson" auto-complete="off"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+      <el-button type="primary" @click="submit1">确 定</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 <script>
-  import { getManageList,online } from '../../api/manager.js'
+  import { getManageList,online,updateWeight,cancel,breakShort } from '../../api/manager.js'
   import { timestampToTime,OrderStatus,getNameById } from '../../utils/enum.js'
+    var qs=require("qs");
   export default {
     props: {
       dataProp: {
@@ -154,11 +201,14 @@
           resultUrl:''
         },
         dialogFormVisible:false,
+        dialogFormVisible2:false,
+        type:'',
         pageNum:1,
         list:[],
         per_page:1,
         total:1,
         formLabelWidth:'100px',
+        beforeReson:''
       }
     },
     created() {
@@ -202,6 +252,33 @@
       onlineCheck(row){
         this.id =row.id;
         this.dialogFormVisible=true;
+      },
+      befor(row,title,type){
+         this.projectId =row.id;
+         this.dialogFormVisible2 =true;
+         this.type = type;
+      },
+      submit1(){
+        if(this.type=="3"){
+          if(!this.beforeReson){
+             this.$message('请输入作废原因');
+             return;
+          }
+          var params ={
+              projectId:this.projectId,
+              reason:this.beforeReson
+          }
+          cancel(qs.stringify(params)).then(response=>{
+             this.$message({
+              message: '设置成功',
+              type: 'success'
+            });
+          })
+        }
+        this.fetch();
+        this.beforeReson='';
+        this.dialogFormVisible=false
+        this.dialogFormVisible2=false
       },
       onSubmit() {
         var params = this.dialogForm;

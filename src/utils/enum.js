@@ -36,8 +36,11 @@ export function getNameById(obj,value){
 
 
 export const OrderStatus = {
-  Online:{id:1,name:'online',text:'上线中'},
-  Init:{id:2,name:'init',text:'投票审核 '},
+  Online:{id:1,name:'online',text:'已上线'},
+  Init:{id:2,name:'init',text:'待审核 '},
   WaitOnline:{id:3,name:'wait_online',text:'待上线'},
-  WaitResult:{id:4,name:'wait_result',text:'已结束 '},
+  WaitResult:{id:4,name:'wait_result',text:'等待结果 '},
+  Check:{id:5,name:'check',text:'待投票 '},
+  Cancel:{id:6,name:'cancel',text:'已作废 '},
+  Complete:{id:7,name:'complete',text:'已结束 '},
 }

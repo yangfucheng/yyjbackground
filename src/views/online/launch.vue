@@ -28,16 +28,15 @@
           </el-form-item>
       <el-form-item label="关键词">
         <el-select v-model="form.tag" placeholder="请选择关键词">
-          <el-option label="推荐" value=""></el-option>
           <el-option label="金融" value="finance"></el-option>
           <el-option label="体育" value="pe"></el-option>
-          <el-option label="娱乐" value="entertainment"></el-option>
+          <el-option label="区块链" value="entertainment"></el-option>
           <el-option label="其他" value="other"></el-option>
            <!--  <el-option label="我的" value="mine"></el-option> -->
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">提交</el-button>
+        <el-button type="primary" @click="onSubmit" :loading="buttonLoading">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -55,14 +54,23 @@ export default {
           optionC:'',
           tag:'',
           projectEndTime:''
-        }
+        },
+        buttonLoading:false
       }
    },
    methods: {
      onSubmit() {
+      this.buttonLoading = true;
       var params = this.form;
       // params.projectEndTime="2018-05-11T11:12:14.409Z";
        savePro(params).then(response => {
+         this.form.title = '';
+         this.form.optionA = '';
+         this.form.optionB = '';
+         this.form.optionC = '';
+         this.form.tag = '';
+         this.form.projectEndTime = '';
+         this.buttonLoading = false;
          this.$message({
           message: '提交成功',
           type: 'success'

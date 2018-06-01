@@ -20,57 +20,59 @@
       </el-form-item>
       <el-form-item label="">
           <el-select v-model="formInline.currency" placeholder="请选择货币">
-            <el-option label="GXS" value="0"></el-option>
-            <el-option label="ETH" value="1"></el-option>
-            <el-option label="BTH" value="2"></el-option>
-            <el-option label="WLH" value="3"></el-option>
+              <el-option label="全部" value=""></el-option>
+              <el-option label="待上线" value="wait_online"></el-option>
+              <el-option label="已上线" value="online"></el-option>
+              <el-option label="等待结果" value="wait_result"></el-option>
+              <el-option label="已结束" value="complete"></el-option>
+              <el-option label="已作废" value="cancel"></el-option>
           </el-select>
       </el-form-item>
         <el-form-item label="">
           <el-input v-model="formInline.title" placeholder="请输入标题"></el-input>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit()">查询</el-button>
+        <el-button type="primary" @click="onSubmit1()">查询</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border>
-      <el-table-column prop="title" label="标题" sortable width="180">
+      <el-table-column prop="title" label="标题" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.title}}
         </template>
       </el-table-column>
        </el-table-column>
-      <el-table-column prop="date" label="项目状态" sortable width="180">
+      <el-table-column prop="date" label="项目状态" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.status | changStatus}}
         </template>
       </el-table-column>
-        <el-table-column prop="optionA" label="选项A" sortable width="180">
+        <el-table-column prop="optionA" label="选项A" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.optionA }}
         </template>
       </el-table-column>
-        <el-table-column prop="optionB" label="选项B" sortable width="180">
+        <el-table-column prop="optionB" label="选项B" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.optionB }}
         </template>
       </el-table-column>
-        <el-table-column prop="optionC" label="选项C" sortable width="180">
+        <el-table-column prop="optionC" label="选项C" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.optionC }}
         </template>
       </el-table-column>
-       <el-table-column prop="voteEndTime" label="结束时间" sortable width="180">
+       <el-table-column prop="voteEndTime" label="结束时间" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.betEndTime | changeTime}}
         </template>
       </el-table-column>
-      <el-table-column prop="voteEndTime" label="开始时间" sortable width="180">
+      <el-table-column prop="voteEndTime" label="开始时间" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.betStartTime | changeTime}}
         </template>
       </el-table-column>
-       <el-table-column prop="result" label="数据来源" sortable width="180">
+       <el-table-column prop="result" label="数据来源" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.resultUrl }}
         </template>
@@ -83,6 +85,9 @@
         </el-button>
         <el-button @click.native.prevent="check(scope.row)" type="text" size="small" v-show="scope.row.status!='complete'">
           审核
+        </el-button>
+        <el-button @click.native.prevent="befor(scope.row,'项目作废','3')" type="text" size="small" v-show="scope.row.status!='complete' && scope.row.status!='cancel'">
+          项目作废
         </el-button>
       </template>
     </el-table-column>
@@ -133,11 +138,25 @@
         </div>
       </el-dialog>
     </div>
+
+    <el-dialog title="项目作废" :visible.sync="dialogFormVisible2">
+    <el-form >
+      <el-form-item label="项目作废原因" :label-width="formLabelWidth">
+        <el-input v-model="beforeReson" auto-complete="off"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+      <el-button type="primary" @click="submit1">确 定</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 <script>
-  import { getManageList,check,result } from '../../api/manager.js'
+  
   import { timestampToTime,getNameById,OrderStatus } from '../../utils/enum.js'
+  import { getManageList,updateWeight,cancel,breakShort,check,result } from '../../api/manager.js'
+    var qs=require("qs");
   export default {
     props: {
       dataProp: {
@@ -157,6 +176,7 @@
         },
         dialogFormVisible:false,
         dialogFormVisible1:false,
+        dialogFormVisible2:false,
         pageNum:1,
         list:[],
         per_page:1,
@@ -167,7 +187,9 @@
         disable:false,
         projectId:'',
         formLabelWidth:'100px',
-        optionCheck:''
+        optionCheck:'',
+        beforeReson:'',
+        type:''
       }
     },
     created() {
@@ -209,6 +231,9 @@
         this.dialogFormVisible1 =true;
         this.optionCheck = row.result;
         this.projectId = row.id;
+        if(row.optionC){
+          this.disable = true;
+        }
       },
       resulte(row){
         this.dialogFormVisible =true;
@@ -233,7 +258,12 @@
               type: 'success'
             });
             this.fetch();
+            this.optionCh ='';
+            this.option ='';
         })
+      },
+      onSubmit1(){
+        this.fetch();
       },
       submit(){
         var params ={
@@ -246,7 +276,36 @@
               type: 'success'
             });
             this.fetch();
+            this.optionCh ='';
+            this.option ='';
         })
+      },
+       befor(row,title,type){
+         this.projectId =row.id;
+         this.dialogFormVisible2 =true;
+         this.type = type;
+      },
+      submit1(){
+        if(this.type=="3"){
+          if(!this.beforeReson){
+             this.$message('请输入作废原因');
+             return;
+          }
+          var params ={
+              projectId:this.projectId,
+              reason:this.beforeReson
+          }
+          cancel(qs.stringify(params)).then(response=>{
+             this.$message({
+              message: '设置成功',
+              type: 'success'
+            });
+          })
+        }
+        this.fetch();
+        this.beforeReson='';
+        this.dialogFormVisible=false
+        this.dialogFormVisible2=false
       }
     }
   }

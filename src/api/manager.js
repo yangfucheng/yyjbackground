@@ -50,3 +50,31 @@ export function result(params) {
   })
 }
 
+//项目提前结束下注
+export function breakShort(params) {
+  return request({
+    url: '/backend/project/breakShort',
+    method: 'post',
+    data: params
+  })
+}
+//项目提前结束
+export function cancel(params) {
+  return request({
+    url: '/backend/project/cancel',
+    method: 'post',
+    data: params
+  })
+}
+//修改项目权重
+export function updateWeight(params) {
+  return request({
+    url: '/backend/project/updateWeight',
+    method: 'post',
+    data: params
+  })
+}
+
+
+
+

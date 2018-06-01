@@ -75,6 +75,24 @@ export function updateWeight(params) {
   })
 }
 
+//获取钱包列表
+export function getCoin(params) {
+  return request({
+    url: '/app/user/walletList',
+    method: 'get',
+    data: params
+  })
+}
+
+//空投
+export function airdrop(params) {
+  return request({
+    url: '/backend/wallet/update',
+    method: 'post',
+    data: params
+  })
+}
+
 
 
 

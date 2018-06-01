@@ -59,9 +59,9 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/manage',
+    path: '/management',
     component: Layout,
-    meta: { title: '管理', icon: 'tree' },
+    meta: { title: '平台资产管理', icon: 'tree' },
     children: [
       // {
       //   path: 'index',
@@ -70,11 +70,11 @@ export const constantRouterMap = [
       //   meta: { title: '投票项目管理', icon: 'table' }
       // },
       {
-        path: 'c',
-        name: 'c',
-        component: () => import('@/views/index/index'),
-        meta: { title: '平台资产管理', icon: 'table' }
-      }
+        path: 'airdrop',
+        name: 'airdrop',
+        component: () => import('@/views/management/airdrop'),
+        meta: { title: '空投', icon: 'table' }
+      },
     ]
   },
   {

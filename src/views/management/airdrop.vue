@@ -115,7 +115,11 @@ export default {
           	let operateMemo=this.ruleForm.operateMemo;
           	let params={tel:tel,type:type,amount:amount,tradeCoin:tradeCoin,memo:memo,operateMemo:operateMemo}; 
             airdrop(qs.stringify(params)).then(response => {
-                this.$refs['ruleForm'].resetFields();
+              this.$message({
+                message: '成功!',
+                type: 'success'
+              });
+              this.ruleForm.tel='';
             })
           } else {
             return false;

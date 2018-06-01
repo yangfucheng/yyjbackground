@@ -6,11 +6,13 @@
 	        </el-form-item>
 	        <el-form-item label="交易币种" prop="tradeCoin">
                 <el-select v-model="ruleForm.tradeCoin" placeholder="请选择交易币种">
-                    <el-option :label="item.coin" :value="item.coin" v-for='item in coinData' :key='item.coin'></el-option>
+                    <!-- <el-option :label="item.coin" :value="item.coin" v-for='item in coinData' :key='item.coin'></el-option> -->
+                    <el-option label="PPS" value="PPS" ></el-option>
+                    <el-option label="GXS" value="GXS" ></el-option>
                 </el-select>
             </el-form-item>
 	        <el-form-item label="类型" prop="type">
-                <el-select v-model="ruleForm.type" placeholder="请选择活动区域">
+                <el-select v-model="ruleForm.type" placeholder="请选择类型">
                     <el-option label="下注结算奖励" value="award"></el-option>
                     <el-option label="空投" value="air_drop"></el-option>
                     <el-option label="下注返还" value="bet_back"></el-option>
@@ -50,13 +52,16 @@ export default {
     	if(!reg.test(value)||value==0){
            callback(new Error('请输入大于0的金额'));
     	}else{
+        if(value.indexOf(".")>=0){
     		let arr=value.split(".");
     		if(arr[1].length>8){
-               callback(new Error('最多八位小数'));
-            }
-            callback();
-    	}
+          callback(new Error('最多八位小数'));
+        }
         callback();
+        }
+        callback();
+    	}
+      callback();
     };
     return {
     	coinData:[],
@@ -90,25 +95,15 @@ export default {
         },
     }
   },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   created() {
-    this.fetchData();
+    /*this.fetchData();*/
   },
   methods: {
-    fetchData() {
+   /* fetchData() {
       getCoin().then(response => {
         this.coinData=response.body;
       })
-    },
+    },*/
     submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

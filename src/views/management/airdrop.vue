@@ -32,6 +32,13 @@
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
         </el-form>
+        <div style='margin-top:60px;color:rgb(64, 158, 255)'>
+          <a href="/backend/file/walletModel/download" target='_blank' >批量导出<i class="el-icon-download"></i></a><br/><br/>
+          <el-upload class="upload-demo" action="/backend/file/wallet/import"  :before-upload="beforeAvatarUpload"  :on-success='filesuccess'
+          :on-remove="handleRemove" :before-remove="beforeRemove" :limit="1" :file-list="fileList">
+          批量导入<i class="el-icon-upload2"></i>
+          </el-upload>
+        </div>
     </div>
 </template>
 
@@ -64,7 +71,8 @@ export default {
       callback();
     };
     return {
-    	coinData:[],
+    	  coinData:[],
+        fileList:[],
         ruleForm: {
             tel:'',
             tradeCoin:'',
@@ -104,6 +112,21 @@ export default {
         this.coinData=response.body;
       })
     },*/
+      filesuccess(res, file) {
+        alert(res.message);
+      },
+      handleRemove(file, fileList) {
+        return;
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm('确定移除？');
+      },
+      beforeAvatarUpload(file) {
+        if (!/\.(xls|xlsx)$/.test(file.name)) {
+          this.$message.warning("文件类型必须是excel格式！");
+          return false;
+        };
+      },
     submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -120,6 +143,7 @@ export default {
                 type: 'success'
               });
               this.ruleForm.tel='';
+              this.ruleForm.amount='';
             })
           } else {
             return false;
@@ -134,11 +158,16 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.upload-demo{
+  width: 400px;
+}
 .el-select{
 	width: 280px;
 }
+.contain{
+  margin:80px 40px;
+}
 .demo-ruleForm{
 	width:400px;
-	margin:80px 40px;
 }
 </style>

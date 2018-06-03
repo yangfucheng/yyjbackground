@@ -33,7 +33,7 @@
             </el-form-item>
         </el-form>
         <div style='margin-top:60px;color:rgb(64, 158, 255)'>
-          <a href="/backend/file/walletModel/download" target='_blank' >批量导出<i class="el-icon-download"></i></a><br/><br/>
+          <a href="/backend/file/walletModel/download" target='_blank' >模版导出<i class="el-icon-download"></i></a><br/><br/>
           <el-upload class="upload-demo" action="/backend/file/wallet/import"  :before-upload="beforeAvatarUpload"  :on-success='filesuccess'
           :on-remove="handleRemove" :before-remove="beforeRemove" :limit="1" :file-list="fileList">
           批量导入<i class="el-icon-upload2"></i>
@@ -113,7 +113,9 @@ export default {
       })
     },*/
       filesuccess(res, file) {
-        alert(res.message);
+        if(res.message!=null){
+          alert(res.message);
+        }
       },
       handleRemove(file, fileList) {
         return;

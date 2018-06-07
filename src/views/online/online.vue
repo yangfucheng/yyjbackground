@@ -94,9 +94,8 @@
     <div class="dialog">
       <el-dialog title="上线审核" :visible.sync="dialogFormVisible">
         <el-form :model="dialogForm">
-          
           <el-form-item label="交易代币" :label-width="formLabelWidth">
-            <el-select v-model="dialogForm.tradeCoin" placeholder="请选择交易代币">
+            <el-select v-model="dialogForm.tradeCoin" placeholder="请选择交易代币" @change='changeCoin'>
               <el-option label="GXS" value="GXS"></el-option>
               <el-option label="PPS" value="PPS"></el-option>
               <el-option label="ACT" value="ACT"></el-option>
@@ -223,6 +222,24 @@
       }
     },
     methods: {
+      changeCoin(){
+        if(this.dialogForm.tradeCoin=='GXS'){
+          this.dialogForm.maxBet=100;
+          this.dialogForm.minBet=0.05;
+          this.dialogForm.initialAmountA=0.6;
+          this.dialogForm.initialAmountB=0.7;
+        }else if(this.dialogForm.tradeCoin=='PPS'){
+          this.dialogForm.maxBet=100;
+          this.dialogForm.minBet=1;
+          this.dialogForm.initialAmountA=88;
+          this.dialogForm.initialAmountB=95;
+        }else if(this.dialogForm.tradeCoin=='CANDY'){
+          this.dialogForm.maxBet=100;
+          this.dialogForm.minBet=500;
+          this.dialogForm.initialAmountA=6000;
+          this.dialogForm.initialAmountB=7000;
+        }
+      },
       fetch(){
         var params = {
           tradeCoin:this.formInline.tradeCoin,

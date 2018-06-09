@@ -93,6 +93,33 @@ export function airdrop(params) {
   })
 }
 
+//提现列表
+export function withdrawList(params) {
+  return request({
+    url: '/backend/wallet/withdrawList',
+    method: 'get',
+    data: params
+  })
+}
+
+//一键审核
+export function allCheck(params) {
+  return request({
+    url: '/backend/wallet/withdraw/checkAll',
+    method: 'post',
+    data: params
+  })
+}
+
+//批量审核
+export function batchCheck(params) {
+  return request({
+    url: '/backend/wallet/withdraw/check',
+    method: 'post',
+    data: params
+  })
+}
+
 
 
 

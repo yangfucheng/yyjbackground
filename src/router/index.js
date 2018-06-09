@@ -75,6 +75,12 @@ export const constantRouterMap = [
         component: () => import('@/views/management/airdrop'),
         meta: { title: '空投', icon: 'table' }
       },
+      {
+        path: 'withdraw',
+        name: 'withdraw',
+        component: () => import('@/views/management/withdraw'),
+        meta: { title: '提现流水', icon: 'table' }
+      },
     ]
   },
   {

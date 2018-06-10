@@ -5,18 +5,19 @@
         <el-row style="margin: 10px;">
             <el-col :span="22">
                 <!-- <el-input placeholder="请输入商户名" v-model="name" style="width:200px;"></el-input>&nbsp;&nbsp; -->
-                <el-select v-model="status" placeholder="请选择" @change='search'> 
+                <el-select v-model="status" placeholder="请选择"> 
                     <el-option v-for="item in options" :key="item.status" :label="item.value" :value="item.status"></el-option>
                 </el-select>
-                <el-select v-model="tradeCoin" placeholder="请选择币种" @change='search'>
+                <el-select v-model="tradeCoin" placeholder="请选择币种">
                     <el-option label="全部币种" value="" ></el-option>
                     <el-option label="PPS" value="PPS" ></el-option>
                     <el-option label="GXS" value="GXS" ></el-option>
                 </el-select>
+                <span><el-button type="primary" @click="search()">搜索</el-button></span>
             </el-form-item>
             </el-col>
             <!-- <el-col :span="2">
-                <span><el-button type="info" @click="search()">搜索</el-button></span>
+                <span><el-button type="primary" @click="search()">搜索</el-button></span>
             </el-col> -->
         </el-row>
         <el-table :data="tableData.result"   v-loading="loading2" ref="multipleTable" @selection-change="handleSelectionChange">
@@ -122,7 +123,7 @@ export default {
                 var page=page==undefined?1:page;
                 var params={};
                 if(tradeCoin!=''){
-                    params.tradeCoin=tradeCoin;
+                    params.coin=tradeCoin;
                 }
                 if(status!=''){
                     params.status=status;
@@ -142,6 +143,7 @@ export default {
                 		}
                 	}
                 }
+                this.pwd='';
                 this.dialogFormVisible=true;
             },
             submit(){
@@ -158,6 +160,7 @@ export default {
                             message: '审核成功',
                             type: 'success'
                             });
+                            this.dialogFormVisible=false;
                             this.getData({pageNo:1});
                         });
                 	}else{
@@ -166,7 +169,8 @@ export default {
                             message: '审核成功',
                             type: 'success'
                             });
-                        this.getData({pageNo:1});
+                            this.dialogFormVisible=false;
+                            this.getData({pageNo:1});
                         });
                 	}
                 }

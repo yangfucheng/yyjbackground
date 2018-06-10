@@ -98,7 +98,7 @@ export function withdrawList(params) {
   return request({
     url: '/backend/wallet/withdrawList',
     method: 'get',
-    data: params
+    params: params
   })
 }
 

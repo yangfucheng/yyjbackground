@@ -133,18 +133,23 @@ export default {
             },
             check(type,id){
             	this.ids=[];
+                this.pwd='';
             	this.type=type;
                 if(type=='only'){
                     this.ids.push(id);
+                    this.dialogFormVisible=true;
                 }else if(type=='list'){
                 	if(this.multipleSelection.length){
                 		for(var i=0;i<this.multipleSelection.length;i++){
                 			this.ids.push(this.multipleSelection[i].id);
                 		}
-                	}
+                        this.dialogFormVisible=true;
+                	}else{
+                        alert('请先勾选');
+                    }
+                }else if(type=='all'){
+                    this.dialogFormVisible=true;
                 }
-                this.pwd='';
-                this.dialogFormVisible=true;
             },
             submit(){
                 if(this.pwd.trim()==''){

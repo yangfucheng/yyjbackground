@@ -83,7 +83,7 @@ export default {
             return {
         	    tableData:[],
                 loading2:true,
-                options:[{status:'',value:'全部状态'},{status:'pass',value:'完成'},{status:'init',value:'待审核'}],
+                options:[{status:'',value:'全部状态'},{status:'complete',value:'完成'},{status:'init',value:'待审核'}],
                 tradeCoin:'',
                 status:'',
                 multipleSelection: [],
@@ -101,7 +101,7 @@ export default {
             changStatus(value){
                 if(value=='init'){
                	   return '待审核';
-                }else if(value=='pass'){
+                }else if(value=='complete'){
                 	return '完成';
                 }
             }
@@ -167,6 +167,8 @@ export default {
                             });
                             this.dialogFormVisible=false;
                             this.getData({pageNo:1});
+                        }).catch(err=>{
+                            this.dialogFormVisible=false;
                         });
                 	}else{
                 		batchCheck({ids:this.ids,pwd:pwd}).then(response=>{
@@ -176,6 +178,8 @@ export default {
                             });
                             this.dialogFormVisible=false;
                             this.getData({pageNo:1});
+                        }).catch(err=>{
+                            this.dialogFormVisible=false;
                         });
                 	}
                 }
@@ -204,7 +208,6 @@ export default {
             },
             handleSelectionChange(val){
                 this.multipleSelection = val;
-                console.log(this.multipleSelection);
             }
         },
          mounted:function(){

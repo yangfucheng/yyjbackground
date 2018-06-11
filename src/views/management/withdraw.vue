@@ -85,7 +85,7 @@ export default {
                 loading2:true,
                 options:[{status:'',value:'全部状态'},{status:'complete',value:'完成'},{status:'init',value:'待审核'}],
                 tradeCoin:'',
-                status:'',
+                status:'init',
                 multipleSelection: [],
                 dialogFormVisible:false,
                 pwd:'',
@@ -211,7 +211,7 @@ export default {
             }
         },
          mounted:function(){
-            this.getData({pageNo:1});
+            this.getData({pageNo:1,status:'init'});
         }
 }
 </script>

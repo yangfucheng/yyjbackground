@@ -47,21 +47,11 @@
           {{scope.row.status | changStatus}}
         </template>
       </el-table-column>
-        <el-table-column prop="optionA" label="选项A" sortable show-overflow-tooltip>
-        <template slot-scope="scope">
-          {{scope.row.optionA }}
-        </template>
-      </el-table-column>
-        <el-table-column prop="optionB" label="选项B" sortable show-overflow-tooltip>
-        <template slot-scope="scope">
-          {{scope.row.optionB }}
-        </template>
-      </el-table-column>
-        <el-table-column prop="optionC" label="选项C" sortable show-overflow-tooltip>
-        <template slot-scope="scope">
-          {{scope.row.optionC }}
-        </template>
-      </el-table-column>
+       <el-table-column prop="options" label="选项"  >
+           <template slot-scope="scope" >
+          <div v-for="x in scope.row.options" >{{x.optionKey}}:{{x.optionValue}}</div>
+          </template>
+       </el-table-column>
        <el-table-column prop="voteEndTime" label="结束时间" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.betEndTime | changeTime}}
@@ -100,12 +90,10 @@
     </el-pagination>
     <div class="dialog">
       <el-dialog title="结果输入/审核" :visible.sync="dialogFormVisible">
-        <el-form :model="list">
+        <el-form >
           <el-form-item label="正确选项" :label-width="formLabelWidth">
             <el-select v-model="option" placeholder="请选择结果">
-              <el-option label="A" value="A"></el-option>
-              <el-option label="B" value="B"></el-option>
-              <el-option label="C" value="C" v-show="disable"></el-option>
+              <el-option v-for='x in optionsArray'  :label="x.optionKey+':'+x.optionValue" :value="x.optionKey" ></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -118,15 +106,13 @@
 
     <div class="dialog">
       <el-dialog title="结果输入/审核" :visible.sync="dialogFormVisible1">
-        <el-form :model="list">
+        <el-form >
             <el-form-item label="" :label-width="formLabelWidth">
              <b>上个管理员选择了</b> <span>:{{optionCheck}}</span>
             </el-form-item>
           <el-form-item label="正确选项" :label-width="formLabelWidth">
             <el-select v-model="optionCh" placeholder="请选择结果">
-              <el-option label="A" value="A"></el-option>
-              <el-option label="B" value="B"></el-option>
-              <el-option label="C" value="C" v-show="disable"></el-option>
+              <el-option v-for='x in optionsArray'  :label="x.optionKey+':'+x.optionValue" :value="x.optionKey" ></el-option>
             </el-select>
           </el-form-item>
 
@@ -189,6 +175,7 @@
         formLabelWidth:'100px',
         optionCheck:'',
         beforeReson:'',
+        optionsArray:[],
         type:''
       }
     },
@@ -231,6 +218,7 @@
         this.dialogFormVisible1 =true;
         this.optionCheck = row.result;
         this.projectId = row.id;
+        this.optionsArray = row.options;
         if(row.optionC){
           this.disable = true;
         }
@@ -238,9 +226,7 @@
       resulte(row){
         this.dialogFormVisible =true;
         this.projectId = row.id;
-        if(row.optionC){
-          this.disable = true;
-        }
+        this.optionsArray = row.options;
       },
       handleCurrentChange(val){ 
         this.pageNum = val;

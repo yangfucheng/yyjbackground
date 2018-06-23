@@ -57,9 +57,9 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '/Users/leehom/Downloads/预言家后台/prophet/src/main/webapp/WEB-INF/ht/index.html'),
+    index: path.resolve(__dirname, '/Users/leehom/Downloads/yyjht/src/main/webapp/WEB-INF/ht/index.html'),
     // Paths
-    assetsRoot: path.resolve(__dirname, '/Users/leehom/Downloads/预言家后台/prophet/src/main/webapp/WEB-INF/ht'),
+    assetsRoot: path.resolve(__dirname, '/Users/leehom/Downloads/yyjht/src/main/webapp/WEB-INF/ht'),
     assetsSubDirectory: 'static',
 
     // you can set by youself according to actual condition

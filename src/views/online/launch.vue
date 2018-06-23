@@ -4,15 +4,16 @@
       <el-form-item label="标题">
         <el-input v-model="form.title" placeholder="请输入标题"></el-input>
       </el-form-item>
-      <el-form-item label="选项A">
-        <el-input v-model="form.optionA" placeholder="请输A选项"></el-input>
-      </el-form-item>
-      <el-form-item label="选项B">
-        <el-input v-model="form.optionB" placeholder="请输B选项"></el-input>
-      </el-form-item>
-      <el-form-item label="选项C">
-        <el-input v-model="form.optionC" placeholder="请输C选项"></el-input>
-      </el-form-item>
+       <el-form-item
+          v-for="(domain, index) in form.options"
+          :label="'选项' + optionArray[index]"
+          :key="optionArray[index]"
+          :prop="'options.' + index + '.optionValue'"
+
+        >
+          <input v-model="domain.optionValue" style="border:1px solid #ccc;height: 40px;width:200px;margin-right:10px;"></input><el-button @click.prevent="removeDomain(domain)" style="display: inline-block">删除</el-button>
+        </el-form-item>
+          <el-button @click="addDomain" style="margin:-1rem 0 .5rem 6rem;">新增选项</el-button>
      <!--  <el-form-item label="最大下注值">
         <el-input v-model="form.maxBet" placeholder="请输C选项"></el-input>
       </el-form-item>
@@ -46,6 +47,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="buttonLoading">提交</el-button>
+
       </el-form-item>
     </el-form>
   </div>
@@ -58,25 +60,27 @@ export default {
       return {
         form: {
           title:'',
-          optionA:'',
-          optionB:'',
-          optionC:'',
+          options:[{
+            optionValue: '',
+            optionKey:'A'
+          }],
           tag:'',
           projectEndTime:''
         },
-        buttonLoading:false
+        index:0,
+        buttonLoading:false,
+        optionArray:["A","B","C","D","E","F","G","H","I","J","K"]
       }
    },
    methods: {
      onSubmit() {
       this.buttonLoading = true;
       var params = this.form;
+
       // params.projectEndTime="2018-05-11T11:12:14.409Z";
        savePro(params).then(response => {
          this.form.title = '';
-         this.form.optionA = '';
-         this.form.optionB = '';
-         this.form.optionC = '';
+         this.form.options = [];
          this.form.tag = '';
          this.form.projectEndTime = '';
          this.buttonLoading = false;
@@ -85,7 +89,22 @@ export default {
           type: 'success'
         });
        })
-     }
+     },
+     removeDomain(item) {
+        this.index--;
+        var index = this.form.options.indexOf(item)
+        if (index !== -1) {
+          this.form.options.splice(index, 1)
+        }
+      },
+      addDomain() {
+        this.index++;
+        this.form.options.push({
+          optionValue:'' ,
+          optionKey:this.optionArray[this.index],
+          key: Date.now()
+        });
+      }
    }
   }
 </script>

@@ -44,21 +44,10 @@
           {{scope.row.initiatorRole}}
         </template>
       </el-table-column>
-        <el-table-column prop="optionA" label="选项A" sortable show-overflow-tooltip>
-        <template slot-scope="scope">
-          {{scope.row.optionA }}
-        </template>
-      </el-table-column>
-        <el-table-column prop="optionB" label="选项B" sortable show-overflow-tooltip>
-        <template slot-scope="scope">
-          {{scope.row.optionB }}
-        </template>
-      </el-table-column>
-        <el-table-column prop="optionC" label="选项C" sortable show-overflow-tooltip>
-        <template slot-scope="scope">
-          {{scope.row.optionC }}
-        </template>
-      </el-table-column>
+        <el-table-column prop="options" label="选项"  >
+           <template slot-scope="scope" >
+          <div v-for="x in scope.row.options">{{x.optionKey}}:{{x.optionValue}}</div>
+          </template>
        </el-table-column>
        <el-table-column prop="voteEndTime" label="投票结束时间" sortable width="180">
         <template slot-scope="scope">
@@ -115,25 +104,41 @@
               <el-option label="XAS" value="XAS"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="投注上限" :label-width="formLabelWidth">
+          <el-form-item label="投注上限份数" :label-width="formLabelWidth">
             <el-input v-model="dialogForm.maxBet" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="投注下限" :label-width="formLabelWidth">
+          <el-form-item label="投注单价" :label-width="formLabelWidth">
             <el-input v-model="dialogForm.minBet" auto-complete="off"></el-input>
           </el-form-item>
            <el-form-item label="初始资金比" :label-width="formLabelWidth">
-            A:<el-input v-model="dialogForm.initialAmountA" auto-complete="off" style="width:100px"></el-input>
+             <el-form-item
+                v-for="(domain, index) in dialogForm.options"
+                :label="'选项' + optionArray[index]"
+                :key="index"
+                :prop="'options.' + index + '.onlineInitial'"
+              >
+            <el-input v-model="domain.onlineInitial"></el-input>
+            </el-form-item>
+        </el-form-item>
+             
+        <!--     A:<el-input v-model="dialogForm.initialAmountA" auto-complete="off" style="width:100px"></el-input>
             B:<el-input v-model="dialogForm.initialAmountB" auto-complete="off" style="width:100px"></el-input>
-            C:<el-input v-model="dialogForm.initialAmountC" auto-complete="off" style="width:100px"></el-input>
-          </el-form-item>
+            C:<el-input v-model="dialogForm.initialAmountC" auto-complete="off" style="width:100px"></el-input> -->
            <el-form-item label="项目抽成" :label-width="formLabelWidth">
             投票者:<el-input v-model="dialogForm.awardRatioVoter" auto-complete="off" style="width:100px"></el-input>
             开发者:<el-input v-model="dialogForm.awardRatioInitiator" auto-complete="off" style="width:100px"></el-input>
             平台者:<el-input v-model="dialogForm.awardRatioPlatfrom" auto-complete="off" style="width:100px"></el-input>
           </el-form-item>
+
           <el-form-item label="截止时间" :label-width="formLabelWidth">
              <el-date-picker v-model="dialogForm.betEndTime" type="datetime" placeholder="选择日期时间">
              </el-date-picker>
+          </el-form-item>
+          <el-form-item label="项目总金额" :label-width="formLabelWidth">
+            <el-input v-model="dialogForm.totalNum" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="个人总金额" :label-width="formLabelWidth">
+            <el-input v-model="dialogForm.personNum" auto-complete="off"></el-input>
           </el-form-item>
            <el-form-item label="评论区设置" :label-width="formLabelWidth">
               <el-input type="textarea" v-model="dialogForm.notice"></el-input>
@@ -189,9 +194,14 @@
           tradeCoin:'',
           maxBet:'',
           minBet:'',
-          initialAmountA:'',
-          initialAmountB:'',
-          initialAmountC:'',
+          totalNum:'',
+          personNum:'',
+          options:[
+            {
+              onlineInitial:'',
+              optionKey:'A'
+            }
+          ],
           awardRatioInitiator:'',
           awardRatioPlatfrom:'',
           awardRatioVoter:'',
@@ -199,6 +209,8 @@
           notice:'',
           resultUrl:''
         },
+        optionArray:["A","B","C","D","E","F","G","H","I","J","K"],
+        optionsArray:[],
         dialogFormVisible:false,
         dialogFormVisible2:false,
         type:'',
@@ -207,7 +219,8 @@
         per_page:1,
         total:1,
         formLabelWidth:'100px',
-        beforeReson:''
+        beforeReson:'',
+        index:0
       }
     },
     created() {
@@ -240,6 +253,14 @@
           this.dialogForm.initialAmountB=7000;
         }
       },
+      addDomain() {
+        this.index++;
+        this.dialogForm.options.push({
+          onlineInitial:'' ,
+          optionKey:this.optionArray[this.index],
+          key: Date.now()
+        });
+      },
       fetch(){
         var params = {
           tradeCoin:this.formInline.tradeCoin,
@@ -268,6 +289,14 @@
       },
       onlineCheck(row){
         this.id =row.id;
+        this.optionsArray = row.options;
+        this.dialogForm.options = [{
+              onlineInitial:'',
+              optionKey:'A'
+            }];
+        for(var i = 0;i<this.optionsArray.length-1;i++){
+          this.addDomain();
+        }
         this.dialogFormVisible=true;
       },
       befor(row,title,type){
@@ -299,9 +328,11 @@
       },
       onSubmit() {
         var params = this.dialogForm;
+        // alert(JSON.stringify(params))
         params.projectId =this.id;
         online(params).then(response=>{
           this.fetch();
+          
           this.$message({
           message: '审核通过',
           type: 'success'

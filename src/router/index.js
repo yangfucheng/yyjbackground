@@ -94,6 +94,24 @@ export const constantRouterMap = [
       component: () => import('@/views/online/manageList'),
       meta: { title: '项目列表', icon: 'table' }
       },
+      {
+      path:'voteList',
+      name:'voteList',
+      component: () => import('@/views/online/voteList'),
+      meta: { title: '投票项目列表', icon: 'table' }
+      },
+      {
+      path:'/vote/detail',
+      name:'votedetail',
+      hidden:true,
+      component: () => import('@/views/online/votedetail')
+      },
+      { 
+      path: 'wanghong',
+      name: 'wanghong', 
+      component: () => import('@/views/online/wanghong'),
+      meta: { title: '网红列表', icon: 'table' }
+      },
       { 
         path: 'launch',
         name: 'launch', 

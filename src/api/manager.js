@@ -120,6 +120,83 @@ export function batchCheck(params) {
   })
 }
 
+//搜索评论
+export function searchComment(params) {
+  return request({
+    url: '/backend/project/comment/search',
+    method: 'get',
+    params: params
+  })
+}
 
+//搜索回复
+export function searchReply(params) {
+  return request({
+    url: '/backend/project/reply/search',
+    method: 'get',
+    params: params
+  })
+}
 
+//删除评论
+export function deleteComment(params) {
+  return request({
+    url: '/backend/project/comment/delete/'+params,
+    method: 'get',
+    params: params
+  })
+}
 
+//删除回复
+export function deleteReply(params) {
+  return request({
+    url: '/backend/project/reply/delete/'+params,
+    method: 'get',
+    params: params
+  })
+}
+
+//新增网红
+export function addNetred(params) {
+  return request({
+    url: '/backend/homepage/netred',
+    method: 'post',
+    data: params
+  })
+}
+
+//获取网红列表
+export function getNetred(params) {
+  return request({
+    url: '/backend/homepage/netred',
+    method: 'get',
+    params: params
+  })
+}
+
+//编辑网红列表
+export function editNetred(params) {
+  return request({
+    url: '/backend/homepage/homepage/description',
+    method: 'post',
+    data: params
+  })
+}
+
+//网红列表上下架
+export function uplisting(status,params) {
+  return request({
+    url: '/backend/homepage/homepage/netred/'+status,
+    method: 'get',
+    params: params
+  })
+}
+
+//投票项目审核
+export function checkVote(params) {
+  return request({
+    url: '/backend/project/check',
+    method: 'post',
+    data: params
+  })
+}

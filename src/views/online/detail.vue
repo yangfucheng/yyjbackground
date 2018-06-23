@@ -1,4 +1,6 @@
 <template>
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+  <el-tab-pane label="项目详情" name="first">
   <div class="contain">
    	<div class="wrap">
       <div class="wrap-left">
@@ -20,7 +22,7 @@
         </div>
         <div class="left">
           <div><label >项目资金池</label></div>
-          <div><span>19,234{{list.tradeCoin}}</span></div>
+          <div><span>{{list.tradeCoin}}</span></div>
         </div>
         <div class="left">
           <div><label >项目状态</label></div>
@@ -42,8 +44,8 @@
           <div><label >投注下线</label></div>
           <div><span>{{list.mBet}}{{list.tradeCoin}}</span></div>
         </div>
-      </div>
-   		<div class="wrap-right">
+              </div>
+               <div class="wrap-right">
         <div class="right">
           <div><label >数据来源</label></div>
           <div><span>{{list.resultUrl}}</span></div>
@@ -58,27 +60,27 @@
         </div>
          <div class="right">
           <div><label >开发者奖励</label></div>
-          <div><span>2%</span></div>
+          <div><span></span></div>
         </div>
         <div class="right">
           <div><label >投票奖励</label></div>
-          <div><span>2%</span></div>
+          <div><span></span></div>
         </div>
         <div class="right">
           <div><label >参与人数</label></div>
-          <div><span>19,234</span></div>
+          <div><span></span></div>
         </div>
         <div class="right">
           <div><label >分享人数</label></div>
-          <div><span>123</span></div>
+          <div><span></span></div>
         </div>
         <div class="right">
           <div><label >收藏数量</label></div>
-          <div><span>123</span></div>
+          <div><span></span></div>
         </div>
         <div class="right">
           <div><label >评论数量</label></div>
-          <div><span>123</span></div>
+          <div><span></span></div>
         </div>
       </div>
 	   	
@@ -89,9 +91,46 @@
    	</div>
 
   </div>
+  </el-tab-pane>
+  <el-tab-pane label="评论详情" name="second">
+     <template>
+        <el-row style="margin: 10px;">
+            <el-col :span="22">
+                <el-select v-model="type">
+                    <el-option label="评论" value="comment" ></el-option>
+                    <el-option label="回复" value="reply" ></el-option>
+                </el-select>
+                <el-input placeholder="请输入关键字" v-model="key" style="width:200px;"></el-input>&nbsp;&nbsp;
+                <span><el-button type="primary" @click="search()">搜索</el-button></span>
+            </el-col>
+        </el-row>
+        <el-table :data="tableData.result"   v-loading="loading2">
+            <el-table-column prop="userName" label="用户名">
+            </el-table-column>
+            <el-table-column prop="content" label="评论内容">
+            </el-table-column>
+            <el-table-column label="创建时间">
+                <template scope="scope">
+                    <span style="margin-left: 10px">{{scope.row.createTime|changeTime}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" width="140px">
+                <template scope="scope">
+                    <el-button size="small"  type="text" @click="deleteC(scope.row.commentId)" v-show='type=="comment"'>删除</el-button>
+                    <el-button size="small"  type="text" @click="deleteC(scope.row.replyId)" v-show="type=='reply'">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+    <el-col :span="24" class="toolbar">
+       <el-pagination  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="tableData.pageNo" :page-size="tableData.pageSize" layout=" prev, pager, next,jumper" :total="tableData.totalCount" style="float:right;">
+       </el-pagination>
+    </el-col>
+  </el-tab-pane>
+  </el-tabs>
 </template>
 <script>
-  import { detail } from '../../api/manager.js'
+  import { detail,searchComment,deleteComment,deleteReply,searchReply} from '../../api/manager.js'
   import { timestampToTime } from '../../utils/enum.js'
   export default {
     data(){
@@ -106,11 +145,18 @@
           minBet:'',
           resultUrl:'',
           notice:'',
-          tradeCoin:''
-        }
+          tradeCoin:'',
+        },
+        activeName: 'second',
+        key:'',
+        type:'comment',
+        tableData:{},
+        loading2:false,
+        projectId:'',
       }
     },
     created() {
+      this.projectId=this.$route.params.id;
       this.fetch();
     },
     filters: {
@@ -121,16 +167,73 @@
     methods: {
       fetch(){
         var params ={
-          projectId:1
-        }
+          projectId:52
+        };
         detail(params).then(response=>{
           this.list = response.body;
         })
-      }
+      },
+      handleClick(tab, event) {
+        console.log(tab, event);
+      },
+      deleteC(id){
+        if(this.type=='comment'){
+          var datafun=deleteComment;
+        }else{
+          var datafun=deleteReply;
+        }
+        datafun(id).then(response=>{
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+          this.search(this.pageNo);
+        });
+      },
+      getData(type,params){
+        var self=this;
+        if(type=='comment'){
+          var datafun=searchComment;
+        }else{
+          var datafun=searchReply;
+        }
+        datafun(params).then(
+          function(res){
+            var json=res.body;
+            self.tableData=json;
+            self.loading2=false;
+          }).catch(function(err){
+            alert("系统异常！");
+            self.loading2=false;
+          });
+      },
+      handleSizeChange:function(val) {
+        this.search(val);
+      },
+      handleCurrentChange:function(val) {
+        var pageNo=this.tableData.pageNo==undefined?0:this.tableData.pageNo;
+        if(pageNo>0){
+          this.currentPage = val;
+          this.search(val);
+        }
+      },
+      search:function(page) {
+        var type=this.type;
+        var page=page==undefined?1:page;
+        var keyword=this.key;
+        var params={};
+        params.pageNo=page;
+        params.keyword=keyword;
+        params.projectId=52;
+        this.getData(type,params);
+      },
     }
   }
 </script>
 <style lang="scss" scoped>
+.el-tabs{
+  margin:10px 30px;
+}
 	.contain{
 		width:90%;
 		margin:20px auto;

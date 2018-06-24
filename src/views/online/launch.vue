@@ -4,6 +4,15 @@
       <el-form-item label="标题">
         <el-input v-model="form.title" placeholder="请输入标题"></el-input>
       </el-form-item>
+      <el-form-item label="项目图片">
+      <el-upload class="avatar-uploader" :action='upload()' :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+        <img v-if="form.pic" :src="form.pic" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+      </el-form-item>
+      <el-form-item label="话题描述">
+        <el-input type="textarea" v-model="form.notice" style='width:500px;'></el-input>
+      </el-form-item>
        <el-form-item
           v-for="(domain, index) in form.options"
           :label="'选项' + optionArray[index]"
@@ -23,6 +32,10 @@
       <el-form-item label="货币">
         <el-input v-model="form.tradeCoin" placeholder="请输C选项"></el-input>
       </el-form-item> -->
+      <el-form-item label="开始时间" >
+        <el-date-picker v-model="form.projectStartTime" type="datetime" placeholder="选择日期时间">
+        </el-date-picker>
+      </el-form-item>
        <el-form-item label="结束时间" >
              <el-date-picker v-model="form.projectEndTime" type="datetime" placeholder="选择日期时间">
              </el-date-picker>
@@ -45,15 +58,17 @@
            <!--  <el-option label="我的" value="mine"></el-option> -->
         </el-select>
       </el-form-item>
+      <el-form-item label="数据来源">
+        <el-input v-model="form.resultUrl" auto-complete="off"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="buttonLoading">提交</el-button>
-
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
-import { savePro } from '../../api/manager.js'
+import { savePro} from '../../api/manager.js'
 var qs=require("qs");
 export default {
   data() {
@@ -65,7 +80,11 @@ export default {
             optionKey:'A'
           }],
           tag:'',
-          projectEndTime:''
+          projectStartTime:'',
+          projectEndTime:'',
+          notice:'',
+          resultUrl:'',
+          pic:'',
         },
         index:0,
         buttonLoading:false,
@@ -73,6 +92,24 @@ export default {
       }
    },
    methods: {
+      handleAvatarSuccess(res, file) {
+        this.form.pic = res.body;
+      },
+      upload(){
+         return '/backend/image/save';
+      },
+      beforeAvatarUpload(file) {
+        let type=file.type;
+        const isJPG =(type === 'image/jpeg'||type==='image/png'||type==='image/jpg'||type==='image/bmp');
+        const isLt2M = file.size / 1024 / 1024 < 1;
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是图片格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 1MB!');
+        }
+        return isJPG && isLt2M;
+      },
      onSubmit() {
       this.buttonLoading = true;
       var params = this.form;
@@ -83,6 +120,10 @@ export default {
          this.form.options = [];
          this.form.tag = '';
          this.form.projectEndTime = '';
+         this.form.pic='';
+         this.form.resultUrl='';
+         this.form.projectStartTime='';
+         this.form.notice='';
          this.buttonLoading = false;
          this.$message({
           message: '提交成功',
@@ -115,11 +156,28 @@ export default {
     }
   }
 </style>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
+.launch-contain{
+  margin:30px;
+}
 .from-inline{
   width:80%;
   .el-input__inner{
     width:200px;
   }
 }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 360px;
+    height: 180px;
+    line-height: 180px;
+    text-align: center;
+    border: 1px dashed #d9d9d9;
+  }
+  .avatar {
+    width: 360px;
+    height: 180px;
+    display: block;
+  }
 </style>

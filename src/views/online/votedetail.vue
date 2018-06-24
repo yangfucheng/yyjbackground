@@ -7,7 +7,7 @@
         <el-input v-model="ruleform.title" placeholder="请输入标题" disabled='disabled'></el-input>
       </el-form-item>
       <el-form-item label="项目选项">
-        <div v-for='item in ruleform.options' :key='item.index'><span>{{item.optionKey}}</span><el-input v-model="item.optionValue" size="small"></el-input><el-input v-model="item.optionValue" size="small"></el-input>
+        <div v-for='item in ruleform.options' :key='item.index'  class='inline'>{{item.optionKey}}<span>{{item.optionValue}}</span><span>{{item.predictOdds}}%(预计发生概率)</span><!-- <el-input v-model="item.optionValue" size="small" disabled='disabled'></el-input><el-input v-model="item.predictOdds" size="small" disabled='disabled' style='margin-left: 10%'></el-input> -->
         </div>
       </el-form-item>
       <el-form-item label="开始时间" >
@@ -167,10 +167,12 @@ export default {
 .launch-contain{
    margin:50px 20px;
 }
+.inline span{
+   width:200px;
+   text-align:center;
+   display:inline-block;
+}
 .from-inline{
   width:80%;
-  .el-input__inner{
-    width:200px;
-  }
 }
 </style>

@@ -39,7 +39,7 @@
           {{scope.row.title}}
         </template>
       </el-table-column>
-       <el-table-column prop="voteEndTime" label="项目发起放" sortable width="180">
+       <el-table-column prop="initiatorRole" label="项目发起方" sortable width="180">
         <template slot-scope="scope">
           {{scope.row.initiatorRole}}
         </template>
@@ -186,19 +186,19 @@
         id:'',
         dialogForm:{
           tradeCoin:'',
-          maxBet:'',
+          maxBet:'1000000',
           minBet:'',
-          totalNum:'',
-          personNum:'',
+          totalNum:'0',
+          personNum:'0',
           options:[
             {
               onlineInitial:'',
               optionKey:'A'
             }
           ],
-          awardRatioInitiator:'',
-          awardRatioPlatfrom:'',
-          awardRatioVoter:'',
+          awardRatioInitiator:'0',
+          awardRatioPlatfrom:'10',
+          awardRatioVoter:'0',
           betEndTime:'',
         },
         optionArray:["A","B","C","D","E","F","G","H","I","J","K"],

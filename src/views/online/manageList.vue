@@ -18,6 +18,9 @@
         <el-option label="等待结果" value="wait_result"></el-option>
         <el-option label="已结束" value="complete"></el-option>
         <el-option label="已作废" value="cancel"></el-option>
+        <el-option label="待投票上线" value="check"></el-option>
+        <el-option label="审核拒绝" value="refuse"></el-option>
+        <el-option label="投票中" value="vote"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="">

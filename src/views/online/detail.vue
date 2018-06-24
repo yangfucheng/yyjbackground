@@ -167,7 +167,7 @@
     methods: {
       fetch(){
         var params ={
-          projectId:52
+          projectId:this.projectId
         };
         detail(params).then(response=>{
           this.list = response.body;
@@ -224,7 +224,7 @@
         var params={};
         params.pageNo=page;
         params.keyword=keyword;
-        params.projectId=52;
+        params.projectId=this.projectId;
         this.getData(type,params);
       },
     }

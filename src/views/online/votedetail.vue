@@ -159,7 +159,7 @@ export default {
 <style lang="scss">
   .launch-contain{
     .el-input__inner{
-      width:500px;
+      width:400px;
     }
   }
 </style>
@@ -171,8 +171,5 @@ export default {
    width:200px;
    text-align:center;
    display:inline-block;
-}
-.from-inline{
-  width:80%;
 }
 </style>

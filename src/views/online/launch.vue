@@ -40,8 +40,8 @@
              <el-date-picker v-model="form.projectEndTime" type="datetime" placeholder="选择日期时间">
              </el-date-picker>
           </el-form-item>
-      <el-form-item label="关键词">
-        <el-select v-model="form.tag" placeholder="请选择关键词">
+      <el-form-item label="话题归类">
+        <el-select v-model="form.tag" placeholder="请选择话题归类">
           <el-option label="金融" value="finance"></el-option>
           <el-option label="体育" value="pe"></el-option>
           <el-option label="区块链" value="entertainment"></el-option>

@@ -11,20 +11,21 @@
         </div>
       </el-form-item>
       <el-form-item label="开始时间" >
-        <el-date-picker v-model="ruleform.projectStartTime" type="datetime" placeholder="选择日期时间" disabled='disabled'>
+        <el-date-picker v-model="ruleform.projectStartTime" type="datetime" placeholder="选择日期时间">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="结束时间" >
-        <el-date-picker v-model="ruleform.projectEndTime" type="datetime" disabled='disabled'>
+        <el-date-picker v-model="ruleform.projectEndTime" type="datetime" placeholder="选择日期时间">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="数据来源">
-        <el-input v-model="ruleform.resultUrl" disabled='disabled'></el-input>
+        <el-input v-model="ruleform.resultUrl"></el-input>
       </el-form-item>
       <el-form-item label="评论区设置">
-        <el-input v-model="ruleform.notice" disabled='disabled'></el-input>
+        <el-input v-model="ruleform.notice"></el-input>
       </el-form-item>
       <el-form-item>
+        <el-button type="warning" @click="update">提交</el-button>
         <el-button type="primary" @click="check('check')">审核通过</el-button>
         <el-button type="default" @click="check('refuse')">拒绝通过</el-button>
       </el-form-item>
@@ -68,7 +69,7 @@
   </div>
 </template>
 <script>
-import {checkVote,detail} from '../../api/manager.js'
+import {checkVote,detail,eidtVote} from '../../api/manager.js'
 var qs=require("qs");
 export default {
   data() {
@@ -77,7 +78,10 @@ export default {
           title:'',
           options:[],
           tag:'',
-          projectEndTime:''
+          projectStartTime:'',
+          projectEndTime:'',
+          resultUrl:'',
+          notice:'',
         },
         buttonLoading:false,
         dialogFormVisible1:false,
@@ -108,6 +112,18 @@ export default {
         detail(params).then(response=>{
           this.ruleform = response.body;
         })
+      },
+      update(){
+        var params={id:this.projectId,projectStartTime:this.ruleform.projectStartTime,projectEndTime:this.ruleform.projectEndTime,notice:this.ruleform.notice,resultUrl:this.ruleform.resultUrl};
+        eidtVote(params).then(response => {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            });
+            this.$router.push({
+              name:'voteList',
+            });
+        });
       },
       submitPass(status){
         var i=false;

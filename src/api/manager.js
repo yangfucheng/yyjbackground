@@ -200,3 +200,12 @@ export function checkVote(params) {
     data: params
   })
 }
+
+//投票项目编辑
+export function eidtVote(params) {
+  return request({
+    url: '/backend/project/update',
+    method: 'post',
+    data: params
+  })
+}

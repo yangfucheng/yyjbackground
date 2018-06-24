@@ -36,7 +36,7 @@
             </el-table-column>
             <el-table-column label="操作" width="140px">
                 <template scope="scope">
-                    <el-button size="small"  type="text" @click="edit(scope.row.userId)">编辑</el-button>
+                    <el-button size="small"  type="text" @click="edit(scope.row.userId,scope.row.description)">编辑简介</el-button>
                     <el-button size="small"  type="text" @click="uplist('on',scope.row.userId)" v-show='scope.row.isOpen!=1'>上架</el-button>
                     <el-button size="small"  type="text" @click="uplist('off',scope.row.userId)" v-show='scope.row.isOpen==1'>下架</el-button>
                 </template>
@@ -146,7 +146,8 @@
                 this.getData({pageNo:1});
             });
         },
-        edit(id){
+        edit(id,intro){
+            this.intro=intro;
             this.dialogFormVisible2=true;
             this.userId=id;
         },

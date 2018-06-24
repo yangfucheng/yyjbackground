@@ -163,7 +163,7 @@
       return {
         formInline: {
           datePicker:'',
-          status:"",
+          state:"",
           title:'',
           currency:'',
         },

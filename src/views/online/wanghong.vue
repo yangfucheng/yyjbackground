@@ -33,7 +33,7 @@
                     <span style="margin-left: 10px">{{scope.row.isOpen|changStatus}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="follower" label="粉丝数">
+            <el-table-column prop="following" label="粉丝数">
             </el-table-column>
             <el-table-column label="操作" width="140px">
                 <template scope="scope">

@@ -2,14 +2,15 @@
 	<div style="margin:30px;">
     <el-row style="margin: 10px;">
             <el-col :span="22">
-                <!-- 筛选：
+                筛选：
                 <el-select v-model="isOpen" placeholer='全部状态'>
                     <el-option label="全部状态" value="" ></el-option>
                     <el-option label="上架" value="1" ></el-option>
                     <el-option label="下架" value="0" ></el-option>
                 </el-select>
-                <el-input placeholder="请输入手机号/昵称" v-model="key" style="width:200px;"></el-input>&nbsp;&nbsp;
-                <span><el-button type="primary" @click="search()">搜索</el-button></span> -->
+                <el-input placeholder="昵称" v-model="userName" style="width:200px;"></el-input>&nbsp;&nbsp;
+                <el-input placeholder="手机号" v-model="telephone" style="width:200px;"></el-input>&nbsp;&nbsp;
+                <span><el-button type="primary" @click="search()">搜索</el-button></span>
             </el-col>
             <el-col :span='2'>
                 <el-button type="primary" @click="add">新增网红</el-button>
@@ -77,7 +78,6 @@
   export default {
     data(){
       return {
-        key:'',
         isOpen:'',
         tableData:{},
         loading2:false,
@@ -86,10 +86,12 @@
         dialogFormVisible2:false,
         intro:'',
         userId:'',
+        userName:'',
+        telephone:'',
       }
     },
     created() {
-      this.getData({pageNo:1});
+       this.getData({pageNo:1});
     },
     filters: {
       changeTime(value){
@@ -118,7 +120,7 @@
                         message: '操作成功',
                         type: 'success'
                     });
-                    this.getData({pageNo:1});
+                    this.search(this.pageNo);
                 });
             }).catch(() => {
                 return;          
@@ -131,7 +133,7 @@
                     type: 'success'
                 });
                 this.dialogFormVisible=false;
-                this.getData({pageNo:1});
+                this.search(this.pageNo);
             });
         },
         submit1(){
@@ -143,7 +145,7 @@
                 });
                 this.intro='';
                 this.dialogFormVisible2=false;
-                this.getData({pageNo:1});
+                this.search(this.pageNo);
             });
         },
         edit(id,intro){
@@ -176,10 +178,12 @@
         }
       },
       search:function(page) {
-        var type=this.type;
         var page=page==undefined?1:page;
         var params={};
         params.pageNo=page;
+        params.isOpen=this.isOpen;
+        params.userName=this.userName;
+        params.telephone=this.telephone;
         this.getData(params);
       },
     }

@@ -168,7 +168,7 @@ export function addNetred(params) {
 //获取网红列表
 export function getNetred(params) {
   return request({
-    url: '/backend/homepage/netred',
+    url: '/backend/homepage/netred/page',
     method: 'get',
     params: params
   })
@@ -177,7 +177,7 @@ export function getNetred(params) {
 //编辑网红列表
 export function editNetred(params) {
   return request({
-    url: '/backend/homepage/homepage/description',
+    url: '/backend/homepage/description',
     method: 'post',
     data: params
   })
@@ -186,7 +186,7 @@ export function editNetred(params) {
 //网红列表上下架
 export function uplisting(status,params) {
   return request({
-    url: '/backend/homepage/homepage/netred/'+status,
+    url: '/backend/homepage/netred/'+status,
     method: 'get',
     params: params
   })

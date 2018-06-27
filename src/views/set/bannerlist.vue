@@ -6,7 +6,7 @@
             </el-col>
     </el-row>
     <el-table :data="tableData"  v-loading="loading2">
-            <el-table-column prop="categoryName" label="页面">
+            <el-table-column prop="categoryDes" label="页面">
             </el-table-column>
             <el-table-column prop="description" label="简介">
             </el-table-column>
@@ -124,6 +124,7 @@
         },
         add(){
             this.msg='新增轮播图';
+            this.form={};
             this.dialogFormVisible=true;
         },
         deleteB(id){
@@ -163,6 +164,7 @@
                             type: 'success'
                         });
                         this.dialogFormVisible=false;
+                        this.getData();
                         this.$refs['form'].resetFields();
                     })
                 } else {

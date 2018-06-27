@@ -33,7 +33,7 @@
         <el-button type="primary" @click="onSubmit()">查询</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border>
+    <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border @row-dblclick="dblclickOnRow">
       <el-table-column prop="title" label="标题" sortable width="180">
         <template slot-scope="scope">
           {{scope.row.title}}
@@ -227,6 +227,14 @@
       }
     },
     methods: {
+      dblclickOnRow(row){
+        this.$router.push({
+          name:'detail',
+          params:{
+            id:row.id
+          }
+        })
+      },
       changeCoin(){
         if(this.dialogForm.tradeCoin=='GXS'){
           this.dialogForm.maxBet=100;

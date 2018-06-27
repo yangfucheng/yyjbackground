@@ -8,7 +8,7 @@
           <div><label >标题</label></div>
           <div><span>#{{list.title}}# </span></div>
         </div>
-        <div class="left">
+        <!-- <div class="left">
           <div><label >项目选项</label></div>
           <div>
             <span>A选项:不会跌破</span>
@@ -19,7 +19,7 @@
               <li>选项资金池/份:</li>
             </ul>
           </div>
-        </div>
+        </div> -->
         <div class="left">
           <div><label >项目资金池</label></div>
           <div><span>{{list.tradeCoin}}</span></div>
@@ -147,7 +147,7 @@
           notice:'',
           tradeCoin:'',
         },
-        activeName: 'second',
+        activeName: 'first',
         key:'',
         type:'comment',
         tableData:{},

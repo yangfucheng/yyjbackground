@@ -195,7 +195,6 @@
                     self.loading2=false;
                 }
             ).catch(function(err){
-                alert("系统异常！");
                 self.loading2=false;
             });
         },

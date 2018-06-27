@@ -2,6 +2,7 @@
   <div class="launch-contain">
     <el-form ref="ruleform" :model="ruleform" label-width="100px">
       <el-form-item label="发起者" disabled='disabled'>
+        <el-input v-model="ruleform.userName" placeholder="请输入发起者" disabled='disabled'></el-input>
       </el-form-item>
       <el-form-item label="标题">
         <el-input v-model="ruleform.title" placeholder="请输入标题" disabled='disabled'></el-input>
@@ -75,6 +76,7 @@ export default {
   data() {
       return {
         ruleform: {
+          userName:'',
           title:'',
           options:[],
           tag:'',

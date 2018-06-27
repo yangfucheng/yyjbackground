@@ -54,11 +54,11 @@
           {{scope.row.voteEndTime | changeTime}}
         </template>
       </el-table-column>
-       <el-table-column prop="result" label="投票结果" sortable width="180">
+       <!-- <el-table-column prop="result" label="投票结果" sortable width="180">
         <template slot-scope="scope">
           {{scope.row.result }}
         </template>
-      </el-table-column>
+             </el-table-column> -->
       <el-table-column label="操作"  width="120">
       <template slot-scope="scope">
         <el-button @click.native.prevent="onlineCheck(scope.row)" type="text" size="small">
@@ -75,7 +75,7 @@
     </el-table-column>
     </el-table>
     <el-pagination @current-change="handleCurrentChange" :current-page="pageNum"
-      :page-sizes="[15]"
+      :page-sizes="[20]"
       :page-size="per_page"
       layout="total, sizes, prev, pager, next, jumper"
       :total='total'>

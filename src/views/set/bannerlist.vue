@@ -8,7 +8,7 @@
     <el-table :data="tableData"  v-loading="loading2">
             <el-table-column prop="categoryDes" label="页面">
             </el-table-column>
-            <el-table-column prop="description" label="简介">
+            <el-table-column prop="description" label="轮播图描述">
             </el-table-column>
             <el-table-column prop="banner" label="轮播图地址">
             </el-table-column>
@@ -39,6 +39,7 @@
                    <img v-if="form.banner" :src="form.banner" class="avatar">
                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
+                <span style="color:#888;font-size:12px;">上传图片大小不能超过2MB</span>
             </el-form-item>
             <el-form-item label="跳转地址" prop='directUrl'>
                 <el-input v-model="form.directUrl" auto-complete="off"></el-input>
@@ -108,12 +109,12 @@
         beforeAvatarUpload(file) {
             let type=file.type;
             const isJPG =(type === 'image/jpeg'||type==='image/png'||type==='image/jpg'||type==='image/bmp');
-            const isLt2M = file.size / 1024 / 1024 < 1;
+            const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isJPG) {
                 this.$message.error('上传图片只能是图片格式!');
             }
             if (!isLt2M) {
-               this.$message.error('上传图片大小不能超过 1MB!');
+               this.$message.error('上传图片大小不能超过2MB!');
             }
             return isJPG && isLt2M;
         },

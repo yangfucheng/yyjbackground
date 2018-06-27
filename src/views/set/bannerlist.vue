@@ -66,6 +66,7 @@
         msg:'新增轮播图',
         tableData:[],
         loading2:false,
+        loading:false,
         dialogFormVisible:false,
         form:{
             categoryId:'',
@@ -101,6 +102,7 @@
     },
     methods: {
         handleAvatarSuccess(res, file) {
+            this.loading=false;
            this.form.banner = res.body;
         },
         upload(){

@@ -9,3 +9,9 @@ export default {
   name: 'app'
 }
 </script>
+
+<style>
+.el-dialog{
+    width:600px;
+}
+</style>

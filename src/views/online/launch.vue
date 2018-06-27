@@ -103,10 +103,10 @@ export default {
         const isJPG =(type === 'image/jpeg'||type==='image/png'||type==='image/jpg'||type==='image/bmp');
         const isLt2M = file.size / 1024 / 1024 < 1;
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是图片格式!');
+          this.$message.error('上传图片只能是图片格式!');
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 1MB!');
+          this.$message.error('上传图片大小不能超过 1MB!');
         }
         return isJPG && isLt2M;
       },

@@ -209,3 +209,48 @@ export function eidtVote(params) {
     data: params
   })
 }
+
+//获取轮播分类
+export function getClassifyList(params) {
+  return request({
+    url: '/backend/banner/category/list',
+    method: 'get',
+    params: params
+  })
+}
+
+//获取轮播图列表
+export function getBannerList(params) {
+  return request({
+    url: '/backend/banner/list',
+    method: 'get',
+    params: params
+  })
+}
+
+//轮播图信息保存
+export function saveBanner(params) {
+  return request({
+    url: '/backend/banner/save',
+    method: 'post',
+    data: params
+  })
+}
+
+//轮播图信息更新
+export function updateBanner(params) {
+  return request({
+    url: '/backend/banner/update',
+    method: 'post',
+    data: params
+  })
+}
+
+//轮播图删除
+export function deleteBanner(params) {
+  return request({
+    url: '/backend/banner/delete',
+    method: 'post',
+    data: params
+  })
+}

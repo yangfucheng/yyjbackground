@@ -59,6 +59,19 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/set',
+    component: Layout,
+    meta: { title: '项目管理', icon: 'tree' },
+    children: [
+      {
+        path: 'bannerlist',
+        name: 'bannerlist',
+        component: () => import('@/views/set/bannerlist'),
+        meta: { title: '轮播图列表', icon: 'table' }
+      }
+    ]
+  },
+  {
     path: '/management',
     component: Layout,
     meta: { title: '平台资产管理', icon: 'tree' },

@@ -25,6 +25,7 @@
     </el-form-item>
     <el-form-item label="">
         <el-select v-model="formInline.currency" placeholder="请选择货币">
+          <el-option label="BTC" value="BTC"></el-option>
           <el-option label="GXS" value="GXS"></el-option>
           <el-option label="PPS" value="PPS"></el-option>
           <el-option label="ACT" value="ACT"></el-option>
@@ -197,7 +198,7 @@
     methods: {
       fetch(){
         var params = {
-          tradeCoin:this.formInline.tradeCoin,
+          tradeCoin:this.formInline.currency,
           title:this.formInline.title,
           pageNo:this.pageNum,
           type:'index',

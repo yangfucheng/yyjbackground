@@ -12,6 +12,7 @@
                     <el-option label="全部币种" value="" ></el-option>
                     <el-option label="PPS" value="PPS" ></el-option>
                     <el-option label="GXS" value="GXS" ></el-option>
+                    <el-option label="BTC" value="BTC" ></el-option>
                 </el-select>
                 <span><el-button type="primary" @click="search()">搜索</el-button></span>
             </el-form-item>

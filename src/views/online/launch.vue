@@ -87,12 +87,14 @@ export default {
           pic:'',
         },
         index:0,
+        loading:false,
         buttonLoading:false,
-        optionArray:["A","B","C","D","E","F","G","H","I","J","K"]
+        optionArray:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
       }
    },
    methods: {
       handleAvatarSuccess(res, file) {
+        this.loading=false;
         this.form.pic = res.body;
       },
       upload(){
@@ -116,8 +118,12 @@ export default {
 
       // params.projectEndTime="2018-05-11T11:12:14.409Z";
        savePro(params).then(response => {
-         this.form.title = '';
-         this.form.options = [];
+          this.form.title = '';
+          this.form.options =[{
+            optionValue: '',
+            optionKey:'A'
+          }];
+          this.index=0;
          this.form.tag = '';
          this.form.projectEndTime = '';
          this.form.pic='';

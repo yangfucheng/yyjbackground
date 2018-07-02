@@ -20,17 +20,18 @@
       </el-form-item>
       <el-form-item label="">
           <el-select v-model="formInline.currency" placeholder="请选择货币">
-            <el-option label="GXS" value="0"></el-option>
-            <el-option label="ETH" value="1"></el-option>
-            <el-option label="BTH" value="2"></el-option>
-            <el-option label="WLH" value="3"></el-option>
+            <el-option label="GXS" value="GXS"></el-option>
+            <el-option label="ETH" value="ETH"></el-option>
+            <el-option label="BTH" value="BTH"></el-option>
+            <el-option label="WLH" value="WLH"></el-option>
+            <el-option label="BTC" value="BTC"></el-option>
           </el-select>
       </el-form-item>
         <el-form-item label="">
           <el-input v-model="formInline.title" placeholder="请输入标题"></el-input>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit()">查询</el-button>
+        <el-button type="primary" @click="search()">查询</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border @row-dblclick="dblclickOnRow">
@@ -82,9 +83,10 @@
     </el-pagination>
     <div class="dialog">
       <el-dialog title="上线审核" :visible.sync="dialogFormVisible">
-        <el-form :model="dialogForm">
+        <el-form :model="dialogForm"  ref='form'>
           <el-form-item label="交易代币" :label-width="formLabelWidth">
             <el-select v-model="dialogForm.tradeCoin" placeholder="请选择交易代币" @change='changeCoin'>
+              <el-option label="BTC" value="BTC"></el-option>
               <el-option label="GXS" value="GXS"></el-option>
               <el-option label="PPS" value="PPS"></el-option>
               <el-option label="ACT" value="ACT"></el-option>
@@ -261,9 +263,12 @@
           key: Date.now()
         });
       },
+      search(){
+        this.fetch();
+      },
       fetch(){
         var params = {
-          tradeCoin:this.formInline.tradeCoin,
+          tradeCoin:this.formInline.currency,
           title:this.formInline.title,
           pageNo:this.pageNum,
           type:'wait_online',
@@ -338,6 +343,23 @@
           type: 'success'
         });
           this.dialogFormVisible = false;
+          this.dialogForm={
+          tradeCoin:'',
+          maxBet:'1000000',
+          minBet:'',
+          totalNum:'0',
+          personNum:'0',
+          options:[
+            {
+              onlineInitial:'',
+              optionKey:'A'
+            }
+          ],
+          awardRatioInitiator:'0',
+          awardRatioPlatfrom:'10',
+          awardRatioVoter:'0',
+          betEndTime:'',
+        };
         })
       }
     }

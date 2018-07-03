@@ -1,60 +1,37 @@
 <template>
   <div class="contain">
-   <!-- <el-form :inline="true" :model="formInline" class="from-inline">
-    <el-form-item label="项目时间">
-      <el-date-picker
-      v-model="formInline.datePicker"
-      type="daterange"
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期">
-      </el-date-picker>
-    </el-form-item>
-    <el-form-item label="">
-      <el-select v-model="formInline.state" placeholder="请选择状态">
+   <el-form :inline="true" class="from-inline">
+    <el-form-item>
+      <el-select v-model="status" placeholder="请选择状态">
         <el-option label="全部" value=""></el-option>
-        <el-option label="待上线" value="wait_online"></el-option>
-        <el-option label="已上线" value="online"></el-option>
-        <el-option label="等待结果" value="wait_result"></el-option>
-        <el-option label="已结束" value="complete"></el-option>
-        <el-option label="已作废" value="cancel"></el-option>
+        <el-option label="待审核" value="init"></el-option>
+        <el-option label="待上线" value="check"></el-option>
+        <el-option label="审核拒绝" value="refuse"></el-option>
+        <el-option label="投票中" value="vote"></el-option>
+        <el-option label="投票失败" value="failed"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="">
-        <el-select v-model="formInline.currency" placeholder="请选择货币">
-          <el-option label="GXS" value="GXS"></el-option>
-          <el-option label="PPS" value="PPS"></el-option>
-          <el-option label="ACT" value="ACT"></el-option>
-         
-          <el-option label="BCDN" value="BCDN"></el-option>
-        
-          <el-option label="CANDY" value="CANDY"></el-option>
-        
-        
-          <el-option label="KCASH" value="KCASH"></el-option>
-          <el-option label="MAG" value="MAG"></el-option>
-          <el-option label="MDS" value="MDS"></el-option>
-          <el-option label="NULS" value="NULS"></el-option>
-          <el-option label="STC" value="STC"></el-option>
-        
-          <el-option label="UIP" value="UIP"></el-option>
-          <el-option label="XAS" value="XAS"></el-option>
-        </el-select>
-    </el-form-item>
-      <el-form-item label="">
-        <el-input v-model="formInline.title" placeholder="请输入标题"></el-input>
+      <el-form-item>
+        <el-input v-model="title" placeholder="请输入标题"></el-input>
       </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onSubmit()">查询</el-button>
+      <el-button type="primary" @click="search()">查询</el-button>
     </el-form-item>
-     </el-form> -->
+     </el-form> 
   <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border @row-dblclick="dblclickOnRow">
+    <el-table-column prop="initiatorRole" label="发起人" sortable >
+    </el-table-column>
     <el-table-column prop="title" label="标题" sortable >
       <template slot-scope="scope" >
         {{scope.row.title}}
       </template>
     </el-table-column>
-     <el-table-column prop="betStartTime" label="开始时间" sortable show-overflow-tooltip>
+    <el-table-column prop="status" label="状态" sortable>
+      <template slot-scope="scope">
+        {{scope.row.status | changeStatus}}
+      </template>
+    </el-table-column>
+     <!-- <el-table-column prop="betStartTime" label="开始时间" sortable show-overflow-tooltip>
       <template slot-scope="scope">
         {{scope.row.projectStartTime | changeTime}}
       </template>
@@ -63,19 +40,22 @@
       <template slot-scope="scope">
         {{scope.row.projectEndTime | changeTime}}
       </template>
-    </el-table-column>
+    </el-table-column> 
     <el-table-column prop="tag" label="tag" sortable >
       <template slot-scope="scope" >
         {{scope.row.tag}}
       </template>
-    </el-table-column>
+    </el-table-column>-->
     <el-table-column label="操作"  width="200">
       <template slot-scope="scope">
-        <el-button @click.native.prevent="check(scope.row.id,'check')" type="text" size="small">
+        <el-button @click.native.prevent="check(scope.row.id,'check')" type="text" size="small" v-show='scope.row.status=="init"'>
           审核通过
         </el-button>
-        <el-button @click.native.prevent="check(scope.row.id,'refuse')" type="text" size="small">
+        <el-button @click.native.prevent="check(scope.row.id,'refuse')" type="text" size="small" v-show='scope.row.status=="init"'>
           拒绝通过
+        </el-button>
+        <el-button @click.native.prevent="check(scope.row.id,'cancel')" type="text" size="small" v-show='scope.row.status=="vote"'>
+          作废
         </el-button>
       </template>
     </el-table-column>
@@ -126,7 +106,7 @@
 </template>
 <script>
   import { getManageList,checkVote} from '../../api/manager.js'
-  import { timestampToTime,OrderStatus,getNameById } from '../../utils/enum.js'
+  import { timestampToTime} from '../../utils/enum.js'
   var qs=require("qs");
   export default {
     props: {
@@ -136,6 +116,8 @@
     },
     data() {
       return {
+        status:'',
+        title:'',
         pageNum:1,
         dialogFormVisible:false,
         dialogFormVisible1:false,
@@ -169,20 +151,35 @@
       changeTime(value){
         return timestampToTime(value)
       },
-      changStatus(value){
-        return getNameById(OrderStatus,value)
+      changeStatus(value){
+        if(value=='init'){
+          return '待审核';
+        }else if(value=='check'){
+          return '待上线';
+        }else if(value=='refuse'){
+          return '审核拒绝';
+        }else if(value=='vote'){
+          return '投票中';
+        }else if(value='failed'){
+          return '投票失败';
+        }
       }
     },
     methods: {
       fetch(){
         var params = {
           pageNo:this.pageNum,
-          type:'init',
+          type:'vote',
+          status:this.status,
+          title:this.title,
         }
         getManageList(params).then(response =>{
           this.list = response.body.result;
           this.total =response.body.totalCount;
         })
+      },
+      search(){
+        this.fetch();
       },
       handleCurrentChange(val){ 
         this.pageNum = val;

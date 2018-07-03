@@ -5,11 +5,19 @@
         <el-input v-model="ruleform.userName" placeholder="请输入发起者" disabled='disabled'></el-input>
       </el-form-item>
       <el-form-item label="标题">
-        <el-input v-model="ruleform.title" placeholder="请输入标题" disabled='disabled'></el-input>
+        <el-input v-model="ruleform.title" placeholder="请输入标题"></el-input>
       </el-form-item>
+      <el-form-item
+          v-for="(domain, index) in ruleform.options"
+          :label="'选项' + optionArray[index]"
+          :key="optionArray[index]"
+          :prop="'options.' + index + '.optionValue'"
+        >
+          <input v-model="domain.optionValue" class="inline"/>
+          <input v-model="domain.predictOdds" class='inline'/><el-button @click.prevent="removeDomain(domain)" style="margin-left: 10px">删除</el-button>
+        </el-form-item>
+          <el-button @click="addDomain()" style="margin:-1rem 0 .5rem 6rem;">新增选项</el-button>
       <el-form-item label="项目选项">
-        <div v-for='item in ruleform.options' :key='item.index'  class='inline'>{{item.optionKey}}<span>{{item.optionValue}}</span><span>{{item.predictOdds}}%(预计发生概率)</span><!-- <el-input v-model="item.optionValue" size="small" disabled='disabled'></el-input><el-input v-model="item.predictOdds" size="small" disabled='disabled' style='margin-left: 10%'></el-input> -->
-        </div>
       </el-form-item>
       <el-form-item label="开始时间" >
         <el-date-picker v-model="ruleform.projectStartTime" type="datetime" placeholder="选择日期时间">
@@ -102,6 +110,7 @@ export default {
           voteEndTime: [{ required: true,message: '请输入结束时间'}],
         },
         projectId:'',
+        optionArray:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
       }
    },
     created() {
@@ -115,8 +124,23 @@ export default {
           this.ruleform = response.body;
         })
       },
+      removeDomain(item) {
+        var index = this.ruleform.options.indexOf(item)
+        if (index !== -1) {
+          this.ruleform.options.splice(index, 1)
+        }
+      },
+      addDomain() {
+        var length=this.ruleform.options.length;
+        this.ruleform.options.push({
+          optionValue:'' ,
+          optionKey:this.optionArray[length],
+          predictOdds:'',
+          projectId:this.projectId,
+        });
+      },
       update(){
-        var params={id:this.projectId,projectStartTime:this.ruleform.projectStartTime,projectEndTime:this.ruleform.projectEndTime,notice:this.ruleform.notice,resultUrl:this.ruleform.resultUrl};
+        var params={id:this.projectId,projectStartTime:this.ruleform.projectStartTime,title:this.ruleform.title,projectEndTime:this.ruleform.projectEndTime,notice:this.ruleform.notice,options:this.ruleform.options,resultUrl:this.ruleform.resultUrl};
         eidtVote(params).then(response => {
             this.$message({
               message: '修改成功',
@@ -185,9 +209,19 @@ export default {
 .launch-contain{
    margin:50px 20px;
 }
-.inline span{
-   width:200px;
-   text-align:center;
-   display:inline-block;
+.inline{
+    width:150px;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #606266;
+    font-size: inherit;
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    padding: 0 15px;
+    margin-left:10px;
+    margin-bottom:5px;
 }
 </style>

@@ -54,7 +54,7 @@
         <el-button @click.native.prevent="check(scope.row.id,'refuse')" type="text" size="small" v-show='scope.row.status=="init"'>
           拒绝通过
         </el-button>
-        <el-button @click.native.prevent="check(scope.row.id,'cancel')" type="text" size="small" v-show='scope.row.status=="vote"'>
+        <el-button @click.native.prevent="dialogFormVisible2==true" type="text" size="small" v-show='status=="vote"'>
           作废
         </el-button>
       </template>
@@ -102,10 +102,21 @@
             <el-button type="primary" @click="submitPass('refuse')">确 定</el-button>
         </div>
     </el-dialog>
+    <el-dialog title="项目作废" :visible.sync="dialogFormVisible2">
+    <el-form label-width="100px">
+      <el-form-item label="项目作废">
+        <el-input v-model="reason" auto-complete="off"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible2= false">取 消</el-button>
+      <el-button type="primary" @click="cancelPro">确 定</el-button>
+    </div>
+    </el-dialog>
   </div>
 </template>
 <script>
-  import { getManageList,checkVote} from '../../api/manager.js'
+  import { getManageList,checkVote,cancel} from '../../api/manager.js'
   import { timestampToTime} from '../../utils/enum.js'
   var qs=require("qs");
   export default {
@@ -127,7 +138,7 @@
         type:'',
         projectId:'',
         title:'',
-        beforeReson:'',
+        reason:'',
         form:{
           targetQuantity:'',
           maxVote:'',
@@ -209,7 +220,7 @@
               return false;
             }
           });
-        }else{
+        }else{ 
           if(this.memo==''||this.failReason==''){
             alert("请输入完整");
             return false;
@@ -237,6 +248,18 @@
         }else{
           this.dialogFormVisible1=true;
         }
+      },
+      cancelPro(){
+          var params ={
+              projectId:this.projectId,
+              reason:this.reason
+          }
+          cancel(qs.stringify(params)).then(response=>{
+             this.$message({
+              message: '作废成功',
+              type: 'success'
+            });
+          })
       }
     }
   }

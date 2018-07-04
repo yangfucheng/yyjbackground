@@ -17,8 +17,6 @@
           <input v-model="domain.predictOdds" class='inline'/><el-button @click.prevent="removeDomain(domain)" style="margin-left: 10px">删除</el-button>
         </el-form-item>
           <el-button @click="addDomain()" style="margin:-1rem 0 .5rem 6rem;">新增选项</el-button>
-      <el-form-item label="项目选项">
-      </el-form-item>
       <el-form-item label="开始时间" >
         <el-date-picker v-model="ruleform.projectStartTime" type="datetime" placeholder="选择日期时间">
         </el-date-picker>
@@ -125,9 +123,15 @@ export default {
         })
       },
       removeDomain(item) {
-        var index = this.ruleform.options.indexOf(item)
+        var index = this.ruleform.options.indexOf(item);
+        var length=this.ruleform.options.length;
         if (index !== -1) {
-          this.ruleform.options.splice(index, 1)
+          this.ruleform.options.splice(index, 1);
+          if(index!=length-1){
+            for(var i=index;i<length-1;i++){
+              this.ruleform.options[index].optionKey=this.optionArray[index];
+            }
+          }
         }
       },
       addDomain() {

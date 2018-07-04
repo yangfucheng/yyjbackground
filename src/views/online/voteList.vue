@@ -54,7 +54,7 @@
         <el-button @click.native.prevent="check(scope.row.id,'refuse')" type="text" size="small" v-show='scope.row.status=="init"'>
           拒绝通过
         </el-button>
-        <el-button @click.native.prevent="dialogFormVisible2==true" type="text" size="small" v-show='status=="vote"'>
+        <el-button @click.native.prevent="check(scope.row.id,'cancel')" type="text" size="small" v-show='scope.row.status=="vote"'>
           作废
         </el-button>
       </template>
@@ -132,6 +132,7 @@
         pageNum:1,
         dialogFormVisible:false,
         dialogFormVisible1:false,
+        dialogFormVisible2:false,
         list:[],
         per_page:1,
         total:1,
@@ -245,8 +246,10 @@
         this.projectId=id;
         if(status=='check'){
           this.dialogFormVisible=true;
-        }else{
+        }else if(status=='refuse'){
           this.dialogFormVisible1=true;
+        }else{
+          this.dialogFormVisible2=true;
         }
       },
       cancelPro(){
@@ -260,6 +263,7 @@
               type: 'success'
             });
           })
+          this.dialogFormVisible2=false;
       }
     }
   }

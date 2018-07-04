@@ -14,7 +14,7 @@
           :prop="'options.' + index + '.optionValue'"
         >
           <input v-model="domain.optionValue" class="inline"/>
-          <input v-model="domain.predictOdds" class='inline'/><el-button @click.prevent="removeDomain(domain)" style="margin-left: 10px">删除</el-button>
+          <input v-model="domain.predictOdds" class='inline'/>%(预计发生概率)<el-button @click.prevent="removeDomain(domain)" style="margin-left: 10px">删除</el-button>
         </el-form-item>
           <el-button @click="addDomain()" style="margin:-1rem 0 .5rem 6rem;">新增选项</el-button>
       <el-form-item label="开始时间" >

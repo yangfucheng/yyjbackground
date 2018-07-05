@@ -22,7 +22,7 @@
         >
           <input v-model="domain.optionValue" style="border:1px solid #ccc;height: 40px;width:200px;margin-right:10px;"></input><el-button @click.prevent="removeDomain(domain)" style="display: inline-block">删除</el-button>
         </el-form-item>
-          <el-button @click="addDomain" style="margin:-1rem 0 .5rem 6rem;">新增选项</el-button>
+          <el-button @click="addDomain" style="margin-left:100px;margin-bottom:10px">新增选项</el-button>
      <!--  <el-form-item label="最大下注值">
         <el-input v-model="form.maxBet" placeholder="请输C选项"></el-input>
       </el-form-item>
@@ -59,7 +59,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="数据来源">
+        <el-input v-model="form.resultSources" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="数据来源url">
         <el-input v-model="form.resultUrl" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="来源显示">
+        <el-radio v-model="form.resultShow" label="true">是</el-radio>
+        <el-radio v-model="form.resultShow" label="false">否</el-radio>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="buttonLoading">提交</el-button>
@@ -85,6 +92,8 @@ export default {
           notice:'',
           resultUrl:'',
           pic:'',
+          resultShow:'true',
+          resultSources:'',
         },
         loading:false,
         buttonLoading:false,
@@ -133,6 +142,8 @@ export default {
           message: '提交成功',
           type: 'success'
         });
+        this.form.resultSources='';
+        this.form.resultShow='true';
        })
      },
      removeDomain(item) {
@@ -185,8 +196,8 @@ export default {
     border: 1px dashed #d9d9d9;
   }
   .avatar {
-    width: 360px;
-    height: 180px;
+    max-width: 360px;
+    max-height: 180px;
     display: block;
   }
 </style>

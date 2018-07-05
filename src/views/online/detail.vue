@@ -47,8 +47,12 @@
               </div>
                <div class="wrap-right">
         <div class="right">
-          <div><label >数据来源</label></div>
+          <div><label >数据来源url</label></div>
           <div><span>{{list.resultUrl}}</span></div>
+        </div>
+        <div class="right">
+          <div><label >数据来源</label></div>
+          <div><span>{{list.resultSources}}</span></div>
         </div>
         <div class="right">
           <div><label >评论区设置</label></div>

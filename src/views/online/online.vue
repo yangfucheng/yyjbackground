@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
      <el-form :inline="true" :model="formInline" class="from-inline">
-      <el-form-item label="项目时间">
+      <!-- <el-form-item label="项目时间">
         <el-date-picker
         v-model="formInline.datePicker"
         type="daterange"
@@ -12,21 +12,20 @@
       </el-form-item>
       <el-form-item label="">
         <el-select v-model="formInline.state" placeholder="请选择状态">
-          <el-option label="全部" value="0"></el-option>
+          <el-option label="全部" value=""></el-option>
           <el-option label="进行中" value="online"></el-option>
           <el-option label="停止下注" value="complete"></el-option>
           <el-option label="已下注" value=" wait_result "></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="">
+      </el-form-item> -->
+      <!-- <el-form-item label="">
           <el-select v-model="formInline.currency" placeholder="请选择货币">
             <el-option label="GXS" value="GXS"></el-option>
             <el-option label="ETH" value="ETH"></el-option>
             <el-option label="BTH" value="BTH"></el-option>
-            <el-option label="WLH" value="WLH"></el-option>
             <el-option label="BTC" value="BTC"></el-option>
           </el-select>
-      </el-form-item>
+      </el-form-item> -->
         <el-form-item label="">
           <el-input v-model="formInline.title" placeholder="请输入标题"></el-input>
         </el-form-item>
@@ -272,12 +271,10 @@
       },
       fetch(){
         var params = {
-          tradeCoin:this.formInline.currency,
           title:this.formInline.title,
           pageNo:this.pageNum,
           type:'wait_online',
           // status:'online'
-          status:this.formInline.state
         }
         if(this.formInline.datePicker != null && this.formInline.datePicker.length > 1){
           params.betStartTime = parseTime(this.searchObj.dateRange[0],'{y}-{m}-{d}')

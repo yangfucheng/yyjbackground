@@ -19,8 +19,8 @@
     </el-form-item>
      </el-form> 
   <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border @row-dblclick="dblclickOnRow">
-    <el-table-column prop="initiatorRole" label="发起人" sortable >
-    </el-table-column>
+    <!-- <el-table-column prop="initiatorRole" label="发起人" sortable >
+    </el-table-column> -->
     <el-table-column prop="title" label="标题" sortable >
       <template slot-scope="scope" >
         {{scope.row.title}}
@@ -31,6 +31,11 @@
         {{scope.row.status | changeStatus}}
       </template>
     </el-table-column>
+    <el-table-column prop="voteEndTime" label="投票结束时间" sortable>
+      <template slot-scope="scope">
+        {{scope.row.voteEndTime | changeTime}}
+      </template>
+    </el-table-column> 
      <!-- <el-table-column prop="betStartTime" label="开始时间" sortable show-overflow-tooltip>
       <template slot-scope="scope">
         {{scope.row.projectStartTime | changeTime}}

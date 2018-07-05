@@ -16,7 +16,7 @@
           <input v-model="domain.optionValue" class="inline"/>
           <input v-model="domain.predictOdds" class='inline'/>%(预计发生概率)<el-button @click.prevent="removeDomain(domain)" style="margin-left: 10px">删除</el-button>
         </el-form-item>
-          <el-button @click="addDomain()" style="margin:-1rem 0 .5rem 6rem;">新增选项</el-button>
+          <el-button @click="addDomain()" style="margin:0 0 20px 100px;">新增选项</el-button>
       <el-form-item label="开始时间" >
         <el-date-picker v-model="ruleform.projectStartTime" type="datetime" placeholder="选择日期时间">
         </el-date-picker>
@@ -26,7 +26,14 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="数据来源">
+        <el-input v-model="ruleform.resultSources" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="数据来源url">
         <el-input v-model="ruleform.resultUrl"></el-input>
+      </el-form-item>
+      <el-form-item label="来源显示">
+        <el-radio v-model="ruleform.resultShow" label="true">是</el-radio>
+        <el-radio v-model="ruleform.resultShow" label="false">否</el-radio>
       </el-form-item>
       <el-form-item label="评论区设置">
         <el-input v-model="ruleform.notice"></el-input>
@@ -90,6 +97,8 @@ export default {
           projectEndTime:'',
           resultUrl:'',
           notice:'',
+          resultSources:'',
+          resultShow:'true',
         },
         buttonLoading:false,
         dialogFormVisible1:false,
@@ -120,6 +129,7 @@ export default {
         var params ={projectId:this.projectId};
         detail(params).then(response=>{
           this.ruleform = response.body;
+          this.ruleform.resultShow=''+response.body.resultShow;
         })
       },
       removeDomain(item) {
@@ -144,7 +154,7 @@ export default {
         });
       },
       update(){
-        var params={id:this.projectId,projectStartTime:this.ruleform.projectStartTime,title:this.ruleform.title,projectEndTime:this.ruleform.projectEndTime,notice:this.ruleform.notice,options:this.ruleform.options,resultUrl:this.ruleform.resultUrl};
+        var params={id:this.projectId,projectStartTime:this.ruleform.projectStartTime,title:this.ruleform.title,projectEndTime:this.ruleform.projectEndTime,notice:this.ruleform.notice,options:this.ruleform.options,resultUrl:this.ruleform.resultUrl,resultShow:this.ruleform.resultShow,resultSources:this.ruleform.resultSources};
         eidtVote(params).then(response => {
             this.$message({
               message: '修改成功',

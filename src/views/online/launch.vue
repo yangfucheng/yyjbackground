@@ -140,8 +140,10 @@ export default {
         var length=this.form.options.length;4
         if (index !== -1){
             this.form.options.splice(index, 1);
-            for(var i=index;i<length-1;i++){
-              this.form.options[i].optionKey=this.optionArray[i];
+            if(index!=length-1){
+              for(var i=index;i<length-1;i++){
+                this.form.options[i].optionKey=this.optionArray[i];
+              }
             }
         }
       },

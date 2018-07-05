@@ -86,7 +86,6 @@ export default {
           resultUrl:'',
           pic:'',
         },
-        index:0,
         loading:false,
         buttonLoading:false,
         optionArray:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
@@ -123,7 +122,6 @@ export default {
             optionValue: '',
             optionKey:'A'
           }];
-          this.index=0;
          this.form.tag = '';
          this.form.projectEndTime = '';
          this.form.pic='';
@@ -138,17 +136,20 @@ export default {
        })
      },
      removeDomain(item) {
-        this.index--;
-        var index = this.form.options.indexOf(item)
-        if (index !== -1) {
-          this.form.options.splice(index, 1)
+        var index = this.form.options.indexOf(item);1
+        var length=this.form.options.length;4
+        if (index !== -1){
+            this.form.options.splice(index, 1);
+            for(var i=index;i<length-1;i++){
+              this.form.options[i].optionKey=this.optionArray[i];
+            }
         }
       },
       addDomain() {
-        this.index++;
+        var length=this.form.options.length;
         this.form.options.push({
           optionValue:'' ,
-          optionKey:this.optionArray[this.index],
+          optionKey:this.optionArray[length],
           key: Date.now()
         });
       }

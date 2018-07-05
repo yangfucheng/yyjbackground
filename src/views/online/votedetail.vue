@@ -129,7 +129,7 @@ export default {
           this.ruleform.options.splice(index, 1);
           if(index!=length-1){
             for(var i=index;i<length-1;i++){
-              this.ruleform.options[index].optionKey=this.optionArray[index];
+              this.ruleform.options[i].optionKey=this.optionArray[i];
             }
           }
         }

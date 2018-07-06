@@ -36,7 +36,7 @@
             </el-form-item>
             <el-form-item label="轮播图" prop='banner'>
                 <el-upload class="avatar-uploader" :action='upload()' :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                   <img v-if="form.banner" :src="form.banner" class="avatar">
+                   <img v-if="banner" :src="banner" class="avatar">
                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
                 <span style="color:#888;font-size:12px;">上传图片大小不能超过2MB</span>
@@ -66,15 +66,14 @@
         msg:'新增轮播图',
         tableData:[],
         loading2:false,
-        loading:false,
         dialogFormVisible:false,
         form:{
             categoryId:'',
             description:'',
-            banner:'',
             directUrl:'',
             sort:'',
         },
+        banner:'',
         cateList:[],
         rules:{
             categoryId: [
@@ -101,9 +100,8 @@
        this.getData();
     },
     methods: {
-        handleAvatarSuccess(res, file) {
-            this.loading=false;
-           this.form.banner = res.body;
+        handleAvatarSuccess(res) {
+            this.banner = res.body;
         },
         upload(){
            return '/backend/image/save';
@@ -128,6 +126,7 @@
         add(){
             this.msg='新增轮播图';
             this.form={};
+            this.banner='';
             this.dialogFormVisible=true;
         },
         deleteB(id){
@@ -151,7 +150,7 @@
             this.$refs['form'].validate((valid) => {
                 if (valid) {
                     let datafun=saveBanner;
-                    let banner=this.form.banner;
+                    let banner=this.banner;
                     let description=this.form.description;
                     let directUrl=this.form.directUrl;
                     let categoryId=this.form.categoryId;
@@ -168,7 +167,6 @@
                         });
                         this.dialogFormVisible=false;
                         this.getData();
-                        this.$refs['form'].resetFields();
                     })
                 } else {
                     return false;
@@ -180,7 +178,7 @@
             this.form.categoryId=categoryId;
             this.form.description=description;
             this.id=id;
-            this.form.banner=banner;
+            this.banner=banner;
             this.form.directUrl=directUrl;
             this.form.sort=sort;
             this.dialogFormVisible=true;

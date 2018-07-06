@@ -98,7 +98,7 @@ export default {
           resultUrl:'',
           notice:'',
           resultSources:'',
-          resultShow:'true',
+          resultShow:'false',
         },
         buttonLoading:false,
         dialogFormVisible1:false,

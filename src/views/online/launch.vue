@@ -92,8 +92,8 @@ export default {
           notice:'',
           resultUrl:'',
           pic:'',
-          resultShow:'true',
-          resultSources:'',
+          resultShow:'false',
+          resultSources:'点击查看数据来源',
         },
         loading:false,
         buttonLoading:false,
@@ -143,7 +143,7 @@ export default {
           type: 'success'
         });
         this.form.resultSources='';
-        this.form.resultShow='true';
+        this.form.resultShow='false';
        })
      },
      removeDomain(item) {

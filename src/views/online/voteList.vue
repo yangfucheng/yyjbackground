@@ -89,7 +89,7 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button @click="disappear('check')">取 消</el-button>
             <el-button type="primary" @click="submitPass('check')">确 定</el-button>
         </div>
     </el-dialog>
@@ -103,7 +103,7 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible1= false">取 消</el-button>
+            <el-button @click="disappear('refuse')">取 消</el-button>
             <el-button type="primary" @click="submitPass('refuse')">确 定</el-button>
         </div>
     </el-dialog>
@@ -114,7 +114,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible2= false">取 消</el-button>
+      <el-button @click="disappear('zuofei')">取 消</el-button>
       <el-button type="primary" @click="cancelPro">确 定</el-button>
     </div>
     </el-dialog>
@@ -198,6 +198,19 @@
       search(){
         this.fetch();
       },
+      disappear(status){
+        if(status=='zuofei'){
+          this.dialogFormVisible2=false;
+          this.reason=''; 
+        }else if(status=='refuse'){
+          this.dialogFormVisible1=false;
+          this.failReason='';
+          this.memo='';
+        }else{
+          this.dialogFormVisible=false;
+          this.form={};
+        }
+      },
       handleCurrentChange(val){ 
         this.pageNum = val;
         this.fetch();
@@ -241,9 +254,10 @@
               message: '审核成功',
               type: 'success'
             });
-            this.$router.push({
-              name:'managelist',
-            });
+            this.fetch();
+            this.form={};
+            this.failReason='';
+            this.memo='';
         });
         }
       },
@@ -269,6 +283,7 @@
             });
           })
           this.dialogFormVisible2=false;
+          this.reason='';
       }
     }
   }

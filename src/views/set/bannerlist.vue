@@ -34,7 +34,7 @@
             <el-form-item label="轮播图描述" prop='description'>
                 <el-input v-model="form.description" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="轮播图" prop='banner'>
+            <el-form-item label="轮播图">
                 <el-upload class="avatar-uploader" :action='upload()' :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                    <img v-if="banner" :src="banner" class="avatar">
                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -78,9 +78,6 @@
         rules:{
             categoryId: [
                 { required: true, message: '请选择页面'}
-            ],
-            banner: [
-                { required: true, message: '请选择图片'}
             ],
             description: [
                 { required: true, message: '请填写描述', trigger: 'blur'}

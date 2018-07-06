@@ -31,7 +31,7 @@
                     <el-option :label="item.categoryDes" :value="item.id"  v-for='item in cateList' :key='item.id'></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="轮播图描述" prop='description'>
+            <el-form-item label="轮播图描述">
                 <el-input v-model="form.description" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="轮播图">
@@ -41,7 +41,7 @@
                 </el-upload>
                 <span style="color:#888;font-size:12px;">上传图片大小不能超过2MB</span>
             </el-form-item>
-            <el-form-item label="跳转地址" prop='directUrl'>
+            <el-form-item label="跳转地址">
                 <el-input v-model="form.directUrl" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="排序值" prop='sort'>
@@ -78,12 +78,6 @@
         rules:{
             categoryId: [
                 { required: true, message: '请选择页面'}
-            ],
-            description: [
-                { required: true, message: '请填写描述', trigger: 'blur'}
-            ],
-            directUrl: [
-                { required: true, message: '请输入跳转链接', trigger: 'blur'}
             ],
             sort: [
                 { required: true, message: '请输入排序值', trigger: 'blur'}

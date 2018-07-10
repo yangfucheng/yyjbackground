@@ -12,6 +12,6 @@ export default {
 
 <style>
 .el-dialog{
-    width:600px;
+    width:660px;
 }
 </style>

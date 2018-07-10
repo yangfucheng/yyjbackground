@@ -1,6 +1,6 @@
 <template>
-  <div class="launch-contain">
-    <el-form ref="ruleform" :model="ruleform" label-width="100px">
+  <div class="contain">
+    <el-form ref="ruleform" :model="ruleform" label-width="100px" class="form_contain">
       <el-form-item label="发起者" disabled='disabled'>
         <el-input v-model="ruleform.userName" placeholder="请输入发起者" disabled='disabled'></el-input>
       </el-form-item>
@@ -38,7 +38,7 @@
       <el-form-item label="评论区设置">
         <el-input v-model="ruleform.notice"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item v-if="isShow">
         <el-button type="warning" @click="update">提交</el-button>
         <el-button type="primary" @click="check('check')">审核通过</el-button>
         <el-button type="default" @click="check('refuse')">拒绝通过</el-button>
@@ -60,6 +60,63 @@
               <el-date-picker v-model="form.voteEndTime" type="datetime" placeholder="选择日期时间">
               </el-date-picker>
             </el-form-item>
+            <el-form-item label="立即上线">
+                <el-radio v-model="form.startNow" label="true">是</el-radio>
+                <el-radio v-model="form.startNow" label="false">否</el-radio>
+            </el-form-item>
+            <el-form-item label="交易代币" prop="tradeCoin">
+            <el-select v-model="form.tradeCoin" placeholder="请选择交易代币" @change='changeCoin'>
+              <el-option label="BTC" value="BTC"></el-option>
+              <el-option label="GXS" value="GXS"></el-option>
+              <el-option label="PPS" value="PPS"></el-option>
+              <el-option label="ACT" value="ACT"></el-option>
+              <el-option label="ATM" value="ATM"></el-option>
+              <el-option label="BCDN" value="BCDN"></el-option>
+              <el-option label="BIG" value="BIG"></el-option>
+              <el-option label="CANDY" value="CANDY"></el-option>
+              <el-option label="CRE" value="CRE"></el-option>
+              <el-option label="EKT" value="EKT"></el-option>
+              <el-option label="KCASH" value="KCASH"></el-option>
+              <el-option label="MAG" value="MAG"></el-option>
+              <el-option label="MDS" value="MDS"></el-option>
+              <el-option label="NULS" value="NULS"></el-option>
+              <el-option label="STC" value="STC"></el-option>
+              <el-option label="SWTC" value="SWTC"></el-option>
+              <el-option label="UIP" value="UIP"></el-option>
+              <el-option label="XAS" value="XAS"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="投注上限份数" prop='maxBet'>
+            <el-input v-model="form.maxBet" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="投注单价" prop='minBet'>
+            <el-input v-model="form.minBet" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="初始资金比">
+             <el-form-item
+                v-for="(domain, index) in form.options"
+                :label="'选项' + optionArray[index]"
+                :key="index"
+                :prop="'options.' + index + '.onlineInitial'"
+              >
+            <el-input v-model="domain.onlineInitial" style="margin-bottom:5px;width:226px;"></el-input>
+            </el-form-item>
+          </el-form-item>
+          <el-form-item label="项目抽成">
+            投票者:<el-input v-model="form.awardRatioVoter" auto-complete="off" style="width:100px" prop='awardRatioVoter'></el-input>
+            开发者:<el-input v-model="form.awardRatioInitiator" auto-complete="off" style="width:100px" prop='awardRatioInitiator'></el-input>
+            平台者:<el-input v-model="form.awardRatioPlatfrom" auto-complete="off" style="width:100px" prop='awardRatioPlatfrom'></el-input>
+          </el-form-item>
+          <el-form-item label="截止时间" prop='betEndTime'>
+             <el-date-picker v-model="form.betEndTime" type="datetime" placeholder="选择日期时间">
+             </el-date-picker>
+          </el-form-item>
+          <el-form-item label="项目总金额" prop='totalNum'>
+            <el-input v-model="form.totalNum" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="个人总金额" prop='personNum'>
+            <el-input v-model="form.personNum" auto-complete="off"></el-input>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -83,7 +140,7 @@
   </div>
 </template>
 <script>
-import {checkVote,detail,eidtVote} from '../../api/manager.js'
+import {checkVote,detail,eidtVote,lockProject} from '../../api/manager.js'
 var qs=require("qs");
 export default {
   data() {
@@ -100,6 +157,7 @@ export default {
           resultSources:'',
           resultShow:'false',
         },
+        isShow:false,
         buttonLoading:false,
         dialogFormVisible1:false,
         dialogFormVisible:false,
@@ -107,6 +165,23 @@ export default {
           targetQuantity:'',
           maxVote:'',
           voteEndTime:'',
+          voteStartTime:'',
+          startNow:'false',
+          tradeCoin:'',
+          maxBet:'1000000',
+          minBet:'',
+          totalNum:'0',
+          personNum:'0',
+          options:[
+            {
+              onlineInitial:'',
+              optionKey:'A'
+            }
+          ],
+          awardRatioInitiator:'0',
+          awardRatioPlatfrom:'10',
+          awardRatioVoter:'0',
+          betEndTime:'',
         },
         failReason:'',
         memo:'',
@@ -115,6 +190,16 @@ export default {
           maxVote: [{ required: true, trigger: 'blur',message: '请输入单人上限'}],
           voteStartTime: [{ required: true,message: '请输入开始时间'}],
           voteEndTime: [{ required: true,message: '请输入结束时间'}],
+          tradeCoin:[{ required: true,message: '请选择币种'}],
+          maxBet:[{ required: true, trigger: 'blur',message: '请输入投注上限份数'}],
+          minBet:[{ required: true, trigger: 'blur',message: '请输入投注单价'}],
+          totalNum:[{ required: true, trigger: 'blur',message: '请输入项目总金额'}],
+          personNum:[{ required: true, trigger: 'blur',message: '请输入个人总金额'}],
+          options:[{required: true,message: '请输入投注资金份数'}],
+          awardRatioPlatfrom:[{ required: true, trigger: 'blur',message: '请输入平台者项目抽成'}],
+          awardRatioVoter:[{ required: true, trigger: 'blur',message: '请输入投票者项目抽成'}],
+          awardRatioInitiator:[{ required: true, trigger: 'blur',message: '请输入开发者项目抽成'}],
+          betEndTime:[{required: true,message: '请输入截止时间'}],
         },
         projectId:'',
         optionArray:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
@@ -124,13 +209,27 @@ export default {
       this.projectId=this.$route.params.id;
       this.fetch();
     },
-   methods: {
+    beforeRouteLeave (to, from, next) {
+      if(this.isShow){
+        this.isLock(false);
+      }
+      next();
+    },
+    methods: {
       fetch(){
         var params ={projectId:this.projectId};
-        detail(params).then(response=>{
-          this.ruleform = response.body;
-          this.ruleform.resultShow=''+response.body.resultShow;
+        detail(params).then(res=>{
+          this.ruleform = res.body;
+          this.ruleform.resultShow=''+res.body.resultShow;
+          if(res.body.status=='init'){
+            this.isLock(true);
+          }
         })
+      },
+      isLock(status){
+        lockProject(qs.stringify({projectId:this.projectId,status:status})).then(res=>{
+          this.isShow=true;
+        });
       },
       removeDomain(item) {
         var index = this.ruleform.options.indexOf(item);
@@ -152,6 +251,25 @@ export default {
           predictOdds:'',
           projectId:this.projectId,
         });
+      },
+      addoption(){
+        var length=this.form.options.length;
+        this.form.options.push({
+          onlineInitial:'' ,
+          optionKey:this.optionArray[length],
+        });
+      },
+      changeCoin(){
+        if(this.form.tradeCoin=='GXS'){
+          this.form.maxBet=100;
+          this.form.minBet=0.05;
+        }else if(this.form.tradeCoin=='PPS'){
+          this.form.maxBet=100;
+          this.form.minBet=1;
+        }else if(this.form.tradeCoin=='CANDY'){
+          this.form.maxBet=100;
+          this.form.minBet=500;
+        }
       },
       update(){
         var params={id:this.projectId,projectStartTime:this.ruleform.projectStartTime,title:this.ruleform.title,projectEndTime:this.ruleform.projectEndTime,notice:this.ruleform.notice,options:this.ruleform.options,resultUrl:this.ruleform.resultUrl,resultShow:this.ruleform.resultShow,resultSources:this.ruleform.resultSources};
@@ -175,7 +293,19 @@ export default {
               var voteEndTime=this.form.voteEndTime;
               var maxVote=this.form.maxVote;
               var targetQuantity=this.form.targetQuantity;
-              params={projectId:this.projectId,checkStatus:status,voteEndTime:voteEndTime,voteStartTime:voteStartTime,maxVote:maxVote,targetQuantity:targetQuantity};
+              var startNow=this.form.startNow;
+              var projectOnline={};
+              projectOnline.tradeCoin=this.form.tradeCoin;
+              projectOnline.maxBet=this.form.maxBet;
+              projectOnline.minBet=this.form.minBet;
+              projectOnline.totalNum=this.form.totalNum;
+              projectOnline.personNum=this.form.personNum;
+              projectOnline.options=this.form.options;
+              projectOnline.awardRatioInitiator=this.form.awardRatioInitiator;
+              projectOnline.awardRatioPlatfrom=this.form.awardRatioPlatfrom;
+              projectOnline.awardRatioVoter=this.form.awardRatioVoter;
+              projectOnline.betEndTime=this.form.betEndTime;
+              params={projectId:this.projectId,checkStatus:status,startNow:startNow,voteEndTime:voteEndTime,voteStartTime:voteStartTime,maxVote:maxVote,targetQuantity:targetQuantity,projectOnline:projectOnline};
               i=true;
             }else{
               return false;
@@ -204,6 +334,14 @@ export default {
       },
       check(status){
         if(status=='check'){
+          this.optionsArray = this.ruleform.options;
+          this.form.options = [{
+            onlineInitial:'',
+            optionKey:'A'
+          }];
+          for(var i = 0;i<this.optionsArray.length-1;i++){
+            this.addoption();
+          }
           this.dialogFormVisible=true;
         }else{
           this.dialogFormVisible1=true;
@@ -212,16 +350,12 @@ export default {
    }
   }
 </script>
-<style lang="scss">
-  .launch-contain{
-    .el-input__inner{
-      width:400px;
-    }
-  }
-</style>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.launch-contain{
-   margin:50px 20px;
+.form_contain{
+  margin-top:30px;
+}
+.form_contain .el-input{
+  width: 400px;
 }
 .inline{
     width:150px;

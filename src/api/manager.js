@@ -254,3 +254,12 @@ export function deleteBanner(params) {
     data: params
   })
 }
+
+//项目锁
+export function lockProject(params) {
+  return request({
+    url: '/app/project/lock',
+    method: 'post',
+    data: params
+  })
+}

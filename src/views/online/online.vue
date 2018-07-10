@@ -121,10 +121,6 @@
             <el-input v-model="domain.onlineInitial"></el-input>
             </el-form-item>
         </el-form-item>
-             
-        <!--     A:<el-input v-model="dialogForm.initialAmountA" auto-complete="off" style="width:100px"></el-input>
-            B:<el-input v-model="dialogForm.initialAmountB" auto-complete="off" style="width:100px"></el-input>
-            C:<el-input v-model="dialogForm.initialAmountC" auto-complete="off" style="width:100px"></el-input> -->
            <el-form-item label="项目抽成" :label-width="formLabelWidth">
             投票者:<el-input v-model="dialogForm.awardRatioVoter" auto-complete="off" style="width:100px"></el-input>
             开发者:<el-input v-model="dialogForm.awardRatioInitiator" auto-complete="off" style="width:100px"></el-input>
@@ -244,18 +240,12 @@
         if(this.dialogForm.tradeCoin=='GXS'){
           this.dialogForm.maxBet=100;
           this.dialogForm.minBet=0.05;
-          this.dialogForm.initialAmountA=0.6;
-          this.dialogForm.initialAmountB=0.7;
         }else if(this.dialogForm.tradeCoin=='PPS'){
           this.dialogForm.maxBet=100;
           this.dialogForm.minBet=1;
-          this.dialogForm.initialAmountA=88;
-          this.dialogForm.initialAmountB=95;
         }else if(this.dialogForm.tradeCoin=='CANDY'){
           this.dialogForm.maxBet=100;
           this.dialogForm.minBet=500;
-          this.dialogForm.initialAmountA=6000;
-          this.dialogForm.initialAmountB=7000;
         }
       },
       addDomain() {

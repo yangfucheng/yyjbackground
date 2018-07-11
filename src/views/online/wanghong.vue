@@ -5,8 +5,8 @@
                 筛选：
                 <el-select v-model="isOpen" placeholer='全部状态'>
                     <el-option label="全部状态" value="" ></el-option>
-                    <el-option label="上架" value="1" ></el-option>
-                    <el-option label="下架" value="0" ></el-option>
+                    <el-option label="已上架" value="1" ></el-option>
+                    <el-option label="已下架" value="0" ></el-option>
                 </el-select>
                 <el-input placeholder="昵称" v-model="userName" style="width:200px;"></el-input>&nbsp;&nbsp;
                 <el-input placeholder="手机号" v-model="telephone" style="width:200px;"></el-input>&nbsp;&nbsp;
@@ -26,7 +26,13 @@
             </el-table-column>
             <el-table-column prop="telephone" label="手机号">
             </el-table-column>
+            <el-table-column prop="weight" label="权重">
+            </el-table-column>
+            <el-table-column prop="ratio" label="抽成">
+            </el-table-column>
             <el-table-column prop="description" label="简介">
+            </el-table-column>
+            <el-table-column prop="remarks" label="备注">
             </el-table-column>
             <el-table-column label="状态">
                 <template scope="scope">
@@ -37,7 +43,7 @@
             </el-table-column>
             <el-table-column label="操作" width="140px">
                 <template scope="scope">
-                    <el-button size="small"  type="text" @click="edit(scope.row.userId,scope.row.description)">编辑简介</el-button>
+                    <el-button size="small"  type="text" @click="edit(scope.row.userId,scope.row.weight,scope.row.ratio,scope.row.remarks,scope.row.description)">编辑</el-button>
                     <el-button size="small"  type="text" @click="uplist('on',scope.row.userId)" v-show='scope.row.isOpen!=1'>上架</el-button>
                     <el-button size="small"  type="text" @click="uplist('off',scope.row.userId)" v-show='scope.row.isOpen==1'>下架</el-button>
                 </template>
@@ -58,10 +64,19 @@
             <el-button type="primary" @click="submit">确 定</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="编辑简介" :visible.sync="dialogFormVisible2">
-       <el-form >
-            <el-form-item label="输入简介" label-width="100">
+    <el-dialog title="编辑" :visible.sync="dialogFormVisible2">
+        <el-form label-width="100px">
+            <el-form-item label="输入权重">
+                <el-input v-model="weight" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="输入抽成">
+                <el-input v-model="ratio" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="输入简介">
                 <el-input v-model="intro" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="输入备注">
+                <el-input v-model="remarks" auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -85,6 +100,9 @@
         dialogFormVisible:false,
         dialogFormVisible2:false,
         intro:'',
+        ratio:'',
+        remarks:'',
+        weight:'',
         userId:'',
         userName:'',
         telephone:'',
@@ -137,7 +155,7 @@
             });
         },
         submit1(){
-            var params={userId:this.userId,description:this.intro};
+            var params={userId:this.userId,description:this.intro,ratio:this.ratio,remarks:this.remarks,weight:this.weight};
             editNetred(params).then(response=>{
                 this.$message({
                     message: '编辑成功',
@@ -148,10 +166,13 @@
                 this.search(this.pageNo);
             });
         },
-        edit(id,intro){
-            this.intro=intro;
-            this.dialogFormVisible2=true;
+        edit(id,weight,ratio,remarks,description){
+            this.remarks=remarks;
+            this.ratio=ratio;
+            this.weight=weight;
+            this.intro=description;
             this.userId=id;
+            this.dialogFormVisible2=true;
         },
         getData(params){
             var self=this;

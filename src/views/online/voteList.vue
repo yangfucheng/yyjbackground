@@ -150,7 +150,7 @@
             <el-button type="primary" @click="submitPass('check')">确 定</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="审核不通过" :visible.sync="dialogFormVisible1">
+    <el-dialog title="审核不通过" :visible.sync="dialogFormVisible1"  @close='closeDialog'>
        <el-form label-width="100px">
             <el-form-item label="未通过原因">
                 <el-input v-model="failReason" auto-complete="off"></el-input>
@@ -437,6 +437,7 @@
           this.isLock(this.projectId,true);
         }else if(status=='refuse'){
           this.dialogFormVisible1=true;
+          this.isLock(this.projectId,true);
         }else{
           this.dialogFormVisible2=true;
         }

@@ -177,7 +177,7 @@ export function getNetred(params) {
 //编辑网红列表
 export function editNetred(params) {
   return request({
-    url: '/backend/homepage/description',
+    url: '/backend/homepage/netred/update',
     method: 'post',
     data: params
   })

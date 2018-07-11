@@ -87,7 +87,7 @@
               <el-date-picker v-model="form.voteEndTime" type="datetime" placeholder="选择日期时间">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="立即上线">
+            <el-form-item label="立即上线" prop='startNow'>
               <el-radio v-model="form.startNow" label="true">是</el-radio>
               <el-radio v-model="form.startNow" label="false">否</el-radio>
             </el-form-item>
@@ -209,7 +209,7 @@
           voteEndTime:'',
           startNow:'false',
           tradeCoin:'',
-          maxBet:'1000000',
+          maxBet:'1000',
           minBet:'',
           totalNum:'0',
           personNum:'0',
@@ -220,8 +220,8 @@
             }
           ],
           awardRatioInitiator:'0',
-          awardRatioPlatfrom:'10',
-          awardRatioVoter:'0',
+          awardRatioPlatfrom:'8',
+          awardRatioVoter:'2',
           betEndTime:'',
         },
         optionArray:["A","B","C","D","E","F","G","H","I","J","K"],
@@ -238,10 +238,6 @@
           minBet:[{ required: true, trigger: 'blur',message: '请输入投注单价'}],
           totalNum:[{ required: true, trigger: 'blur',message: '请输入项目总金额'}],
           personNum:[{ required: true, trigger: 'blur',message: '请输入个人总金额'}],
-          options:[{required: true,message: '请输入投注资金份数'}],
-          awardRatioPlatfrom:[{ required: true, trigger: 'blur',message: '请输入平台者项目抽成'}],
-          awardRatioVoter:[{ required: true, trigger: 'blur',message: '请输入投票者项目抽成'}],
-          awardRatioInitiator:[{ required: true, trigger: 'blur',message: '请输入开发者项目抽成'}],
           betEndTime:[{required: true,message: '请输入截止时间'}],
         },
       }
@@ -280,10 +276,14 @@
           this.total =response.body.totalCount;
         })
       },
-      isLock(id,status){
+      isLock(id,status,type){
         lockProject(qs.stringify({projectId:id,status:status})).then(res=>{
           if(status){
-            this.dialogFormVisible=true;
+            if(type=='check'){
+              this.dialogFormVisible=true;
+            }else{
+              this.dialogFormVisible1=true;
+            }
           }
         });
       },
@@ -292,13 +292,10 @@
       },
       changeCoin(){
         if(this.form.tradeCoin=='GXS'){
-          this.form.maxBet=100;
           this.form.minBet=0.05;
         }else if(this.form.tradeCoin=='PPS'){
-          this.form.maxBet=100;
           this.form.minBet=1;
         }else if(this.form.tradeCoin=='CANDY'){
-          this.form.maxBet=100;
           this.form.minBet=500;
         }
       },
@@ -320,8 +317,9 @@
           maxVote:'',
           voteStartTime:'',
           voteEndTime:'',
+          startNow:'false',
           tradeCoin:'',
-          maxBet:'1000000',
+          maxBet:'1000',
           minBet:'',
           totalNum:'0',
           personNum:'0',
@@ -332,8 +330,8 @@
             }
           ],
           awardRatioInitiator:'0',
-          awardRatioPlatfrom:'10',
-          awardRatioVoter:'0',
+          awardRatioPlatfrom:'8',
+          awardRatioVoter:'2',
           betEndTime:'',
           };
           this.dialogForm={};
@@ -402,8 +400,9 @@
               maxVote:'',
               voteStartTime:'',
               voteEndTime:'',
+              startNow:'false',
               tradeCoin:'',
-              maxBet:'1000000',
+              maxBet:'1000',
               minBet:'',
               totalNum:'0',
               personNum:'0',
@@ -414,8 +413,8 @@
               }
               ],
               awardRatioInitiator:'0',
-              awardRatioPlatfrom:'10',
-              awardRatioVoter:'0',
+              awardRatioPlatfrom:'8',
+              awardRatioVoter:'2',
               betEndTime:'',
             };
             this.failReason='';
@@ -434,10 +433,12 @@
           for(var i = 0;i<this.optionsArray.length-1;i++){
             this.addDomain();
           }
-          this.isLock(this.projectId,true);
+          this.form.awardRatioInitiator=row.ratio;
+          this.form.awardRatioPlatfrom=8-row.ratio;
+          this.isLock(this.projectId,true,'check');
         }else if(status=='refuse'){
           this.dialogFormVisible1=true;
-          this.isLock(this.projectId,true);
+          this.isLock(this.projectId,true,'refuse');
         }else{
           this.dialogFormVisible2=true;
         }

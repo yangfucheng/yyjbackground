@@ -168,7 +168,7 @@ export default {
           voteStartTime:'',
           startNow:'false',
           tradeCoin:'',
-          maxBet:'1000000',
+          maxBet:'1000',
           minBet:'',
           totalNum:'0',
           personNum:'0',
@@ -179,8 +179,8 @@ export default {
             }
           ],
           awardRatioInitiator:'0',
-          awardRatioPlatfrom:'10',
-          awardRatioVoter:'0',
+          awardRatioPlatfrom:'8',
+          awardRatioVoter:'2',
           betEndTime:'',
         },
         failReason:'',
@@ -195,10 +195,6 @@ export default {
           minBet:[{ required: true, trigger: 'blur',message: '请输入投注单价'}],
           totalNum:[{ required: true, trigger: 'blur',message: '请输入项目总金额'}],
           personNum:[{ required: true, trigger: 'blur',message: '请输入个人总金额'}],
-          options:[{required: true,message: '请输入投注资金份数'}],
-          awardRatioPlatfrom:[{ required: true, trigger: 'blur',message: '请输入平台者项目抽成'}],
-          awardRatioVoter:[{ required: true, trigger: 'blur',message: '请输入投票者项目抽成'}],
-          awardRatioInitiator:[{ required: true, trigger: 'blur',message: '请输入开发者项目抽成'}],
           betEndTime:[{required: true,message: '请输入截止时间'}],
         },
         projectId:'',
@@ -261,13 +257,10 @@ export default {
       },
       changeCoin(){
         if(this.form.tradeCoin=='GXS'){
-          this.form.maxBet=100;
           this.form.minBet=0.05;
         }else if(this.form.tradeCoin=='PPS'){
-          this.form.maxBet=100;
           this.form.minBet=1;
         }else if(this.form.tradeCoin=='CANDY'){
-          this.form.maxBet=100;
           this.form.minBet=500;
         }
       },
@@ -327,7 +320,7 @@ export default {
               type: 'success'
             });
             this.$router.push({
-              name:'managelist',
+              name:'voteList',
             });
           });
         }

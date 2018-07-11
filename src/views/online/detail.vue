@@ -8,6 +8,10 @@
           <div><label >标题</label></div>
           <div><span>#{{list.title}}# </span></div>
         </div>
+        <div class="left">
+          <div><label >发起人</label></div>
+          <div><span>{{list.userName}}</span></div>
+        </div>
         <!-- <div class="left">
           <div><label >项目选项</label></div>
           <div>
@@ -42,7 +46,7 @@
         </div>
          <div class="left">
           <div><label >投注下线</label></div>
-          <div><span>{{list.mBet}}{{list.tradeCoin}}</span></div>
+          <div><span>{{list.minBet}}{{list.tradeCoin}}</span></div>
         </div>
               </div>
                <div class="wrap-right">

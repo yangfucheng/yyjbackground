@@ -28,7 +28,7 @@
             </el-table-column>
             <el-table-column prop="weight" label="权重">
             </el-table-column>
-            <el-table-column prop="ratio" label="抽成">
+            <el-table-column prop="ratio" label="抽成(%)">
             </el-table-column>
             <el-table-column prop="description" label="简介">
             </el-table-column>
@@ -70,7 +70,7 @@
                 <el-input v-model="weight" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="输入抽成">
-                <el-input v-model="ratio" auto-complete="off"></el-input>
+                <el-input v-model="ratio" auto-complete="off"></el-input>%
             </el-form-item>
             <el-form-item label="输入简介">
                 <el-input v-model="intro" auto-complete="off"></el-input>

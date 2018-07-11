@@ -258,7 +258,7 @@ export function deleteBanner(params) {
 //项目锁
 export function lockProject(params) {
   return request({
-    url: '/app/project/lock',
+    url: '/api/project/lock',
     method: 'post',
     data: params
   })

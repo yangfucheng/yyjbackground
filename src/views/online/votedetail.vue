@@ -60,7 +60,7 @@
               <el-date-picker v-model="form.voteEndTime" type="datetime" placeholder="选择日期时间">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="立即上线">
+            <el-form-item label="立即投票上线">
                 <el-radio v-model="form.startNow" label="true">是</el-radio>
                 <el-radio v-model="form.startNow" label="false">否</el-radio>
             </el-form-item>
@@ -107,7 +107,7 @@
             开发者:<el-input v-model="form.awardRatioInitiator" auto-complete="off" style="width:100px" prop='awardRatioInitiator'></el-input>
             平台者:<el-input v-model="form.awardRatioPlatfrom" auto-complete="off" style="width:100px" prop='awardRatioPlatfrom'></el-input>
           </el-form-item>
-          <el-form-item label="截止时间" prop='betEndTime'>
+          <el-form-item label="下注截止时间" prop='betEndTime'>
              <el-date-picker v-model="form.betEndTime" type="datetime" placeholder="选择日期时间">
              </el-date-picker>
           </el-form-item>

@@ -86,6 +86,7 @@
           <el-form-item label="交易代币" :label-width="formLabelWidth">
             <el-select v-model="dialogForm.tradeCoin" placeholder="请选择交易代币" @change='changeCoin'>
               <el-option label="BTC" value="BTC"></el-option>
+              <el-option label="ETH" value="ETH"></el-option>
               <el-option label="GXS" value="GXS"></el-option>
               <el-option label="PPS" value="PPS"></el-option>
               <el-option label="ACT" value="ACT"></el-option>

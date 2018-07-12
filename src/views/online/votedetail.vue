@@ -67,6 +67,7 @@
             <el-form-item label="交易代币" prop="tradeCoin">
             <el-select v-model="form.tradeCoin" placeholder="请选择交易代币" @change='changeCoin'>
               <el-option label="BTC" value="BTC"></el-option>
+              <el-option label="ETH" value="ETH"></el-option>
               <el-option label="GXS" value="GXS"></el-option>
               <el-option label="PPS" value="PPS"></el-option>
               <el-option label="ACT" value="ACT"></el-option>
@@ -217,6 +218,8 @@ export default {
         detail(params).then(res=>{
           this.ruleform = res.body;
           this.ruleform.resultShow=''+res.body.resultShow;
+          this.form.awardRatioInitiator=res.body.netredRatio;
+          this.form.awardRatioPlatfrom=8-res.body.netredRatio;
           if(res.body.status=='init'){
             this.isLock(true);
           }

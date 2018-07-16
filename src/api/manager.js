@@ -49,8 +49,8 @@ export function result(params) {
     data: params
   })
 }
-
-//项目提前结束下注
+ 
+// 项目提前结束下注
 export function breakShort(params) {
   return request({
     url: '/backend/project/breakShort',
@@ -58,7 +58,7 @@ export function breakShort(params) {
     data: params
   })
 }
-//项目提前结束
+// 项目提前结束
 export function cancel(params) {
   return request({
     url: '/backend/project/cancel',
@@ -66,7 +66,7 @@ export function cancel(params) {
     data: params
   })
 }
-//修改项目权重
+// 修改项目权重
 export function updateWeight(params) {
   return request({
     url: '/backend/project/updateWeight',
@@ -75,7 +75,7 @@ export function updateWeight(params) {
   })
 }
 
-//获取钱包列表
+// 获取钱包列表
 export function getCoin(params) {
   return request({
     url: '/app/user/walletList',
@@ -84,7 +84,7 @@ export function getCoin(params) {
   })
 }
 
-//空投
+// 空投
 export function airdrop(params) {
   return request({
     url: '/backend/wallet/update',
@@ -93,7 +93,7 @@ export function airdrop(params) {
   })
 }
 
-//提现列表
+// 提现列表
 export function withdrawList(params) {
   return request({
     url: '/backend/wallet/withdrawList',
@@ -102,7 +102,7 @@ export function withdrawList(params) {
   })
 }
 
-//一键审核
+// 一键审核
 export function allCheck(params) {
   return request({
     url: '/backend/wallet/withdraw/checkAll',
@@ -111,7 +111,7 @@ export function allCheck(params) {
   })
 }
 
-//批量审核
+// 批量审核
 export function batchCheck(params) {
   return request({
     url: '/backend/wallet/withdraw/check',
@@ -120,7 +120,7 @@ export function batchCheck(params) {
   })
 }
 
-//搜索评论
+// 搜索评论
 export function searchComment(params) {
   return request({
     url: '/backend/project/comment/search',
@@ -129,7 +129,7 @@ export function searchComment(params) {
   })
 }
 
-//搜索回复
+// 搜索回复
 export function searchReply(params) {
   return request({
     url: '/backend/project/reply/search',
@@ -138,7 +138,7 @@ export function searchReply(params) {
   })
 }
 
-//删除评论
+// 删除评论
 export function deleteComment(params) {
   return request({
     url: '/backend/project/comment/delete/'+params,
@@ -147,7 +147,7 @@ export function deleteComment(params) {
   })
 }
 
-//删除回复
+// 删除回复
 export function deleteReply(params) {
   return request({
     url: '/backend/project/reply/delete/'+params,
@@ -156,7 +156,7 @@ export function deleteReply(params) {
   })
 }
 
-//新增网红
+// 新增网红
 export function addNetred(params) {
   return request({
     url: '/backend/homepage/netred',
@@ -165,7 +165,7 @@ export function addNetred(params) {
   })
 }
 
-//获取网红列表
+// 获取网红列表
 export function getNetred(params) {
   return request({
     url: '/backend/homepage/netred',
@@ -174,7 +174,7 @@ export function getNetred(params) {
   })
 }
 
-//编辑网红列表
+// 编辑网红列表
 export function editNetred(params) {
   return request({
     url: '/backend/homepage/homepage/description',
@@ -183,16 +183,16 @@ export function editNetred(params) {
   })
 }
 
-//网红列表上下架
-export function uplisting(status,params) {
+// 网红列表上下架
+export function uplisting(status, params) {
   return request({
-    url: '/backend/homepage/homepage/netred/'+status,
+    url: '/backend/homepage/homepage/netred/' + status,
     method: 'get',
     params: params
   })
 }
 
-//投票项目审核
+// 投票项目审核
 export function checkVote(params) {
   return request({
     url: '/backend/project/check',

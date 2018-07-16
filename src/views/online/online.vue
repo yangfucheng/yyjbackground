@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
      <el-form :inline="true" :model="formInline" class="from-inline">
-      <el-form-item label="项目时间">
+      <!-- <el-form-item label="项目时间">
         <el-date-picker
         v-model="formInline.datePicker"
         type="daterange"
@@ -12,28 +12,28 @@
       </el-form-item>
       <el-form-item label="">
         <el-select v-model="formInline.state" placeholder="请选择状态">
-          <el-option label="全部" value="0"></el-option>
+          <el-option label="全部" value=""></el-option>
           <el-option label="进行中" value="online"></el-option>
           <el-option label="停止下注" value="complete"></el-option>
           <el-option label="已下注" value=" wait_result "></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="">
+      </el-form-item> -->
+      <!-- <el-form-item label="">
           <el-select v-model="formInline.currency" placeholder="请选择货币">
-            <el-option label="GXS" value="0"></el-option>
-            <el-option label="ETH" value="1"></el-option>
-            <el-option label="BTH" value="2"></el-option>
-            <el-option label="WLH" value="3"></el-option>
+            <el-option label="GXS" value="GXS"></el-option>
+            <el-option label="ETH" value="ETH"></el-option>
+            <el-option label="BTH" value="BTH"></el-option>
+            <el-option label="BTC" value="BTC"></el-option>
           </el-select>
-      </el-form-item>
+      </el-form-item> -->
         <el-form-item label="">
           <el-input v-model="formInline.title" placeholder="请输入标题"></el-input>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit()">查询</el-button>
+        <el-button type="primary" @click="search()">查询</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border>
+    <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border @row-dblclick="dblclickOnRow">
       <el-table-column prop="title" label="标题" sortable width="180">
         <template slot-scope="scope">
           {{scope.row.title}}
@@ -54,11 +54,11 @@
           {{scope.row.voteEndTime | changeTime}}
         </template>
       </el-table-column>
-       <el-table-column prop="result" label="投票结果" sortable width="180">
+       <!-- <el-table-column prop="result" label="投票结果" sortable width="180">
         <template slot-scope="scope">
           {{scope.row.result }}
         </template>
-      </el-table-column>
+             </el-table-column> -->
       <el-table-column label="操作"  width="120">
       <template slot-scope="scope">
         <el-button @click.native.prevent="onlineCheck(scope.row)" type="text" size="small">
@@ -75,16 +75,18 @@
     </el-table-column>
     </el-table>
     <el-pagination @current-change="handleCurrentChange" :current-page="pageNum"
-      :page-sizes="[15]"
+      :page-sizes="[20]"
       :page-size="per_page"
       layout="total, sizes, prev, pager, next, jumper"
       :total='total'>
     </el-pagination>
     <div class="dialog">
       <el-dialog title="上线审核" :visible.sync="dialogFormVisible">
-        <el-form :model="dialogForm">
+        <el-form :model="dialogForm"  ref='form'>
           <el-form-item label="交易代币" :label-width="formLabelWidth">
             <el-select v-model="dialogForm.tradeCoin" placeholder="请选择交易代币" @change='changeCoin'>
+              <el-option label="BTC" value="BTC"></el-option>
+              <el-option label="ETH" value="ETH"></el-option>
               <el-option label="GXS" value="GXS"></el-option>
               <el-option label="PPS" value="PPS"></el-option>
               <el-option label="ACT" value="ACT"></el-option>
@@ -120,10 +122,6 @@
             <el-input v-model="domain.onlineInitial"></el-input>
             </el-form-item>
         </el-form-item>
-             
-        <!--     A:<el-input v-model="dialogForm.initialAmountA" auto-complete="off" style="width:100px"></el-input>
-            B:<el-input v-model="dialogForm.initialAmountB" auto-complete="off" style="width:100px"></el-input>
-            C:<el-input v-model="dialogForm.initialAmountC" auto-complete="off" style="width:100px"></el-input> -->
            <el-form-item label="项目抽成" :label-width="formLabelWidth">
             投票者:<el-input v-model="dialogForm.awardRatioVoter" auto-complete="off" style="width:100px"></el-input>
             开发者:<el-input v-model="dialogForm.awardRatioInitiator" auto-complete="off" style="width:100px"></el-input>
@@ -142,7 +140,7 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button @click="cancel()">取 消</el-button>
           <el-button type="primary" @click="onSubmit" >确 定</el-button>
         </div>
 
@@ -227,22 +225,28 @@
       }
     },
     methods: {
+      dblclickOnRow(row){
+        this.$router.push({
+          name:'detail',
+          params:{
+            id:row.id
+          }
+        })
+      },
+      cancel(){
+        this.dialogFormVisible=false;
+        this.index=0;
+      },
       changeCoin(){
         if(this.dialogForm.tradeCoin=='GXS'){
           this.dialogForm.maxBet=100;
           this.dialogForm.minBet=0.05;
-          this.dialogForm.initialAmountA=0.6;
-          this.dialogForm.initialAmountB=0.7;
         }else if(this.dialogForm.tradeCoin=='PPS'){
           this.dialogForm.maxBet=100;
           this.dialogForm.minBet=1;
-          this.dialogForm.initialAmountA=88;
-          this.dialogForm.initialAmountB=95;
         }else if(this.dialogForm.tradeCoin=='CANDY'){
           this.dialogForm.maxBet=100;
           this.dialogForm.minBet=500;
-          this.dialogForm.initialAmountA=6000;
-          this.dialogForm.initialAmountB=7000;
         }
       },
       addDomain() {
@@ -253,14 +257,15 @@
           key: Date.now()
         });
       },
+      search(){
+        this.fetch();
+      },
       fetch(){
         var params = {
-          tradeCoin:this.formInline.tradeCoin,
           title:this.formInline.title,
           pageNo:this.pageNum,
           type:'wait_online',
           // status:'online'
-          status:this.formInline.state
         }
         if(this.formInline.datePicker != null && this.formInline.datePicker.length > 1){
           params.betStartTime = parseTime(this.searchObj.dateRange[0],'{y}-{m}-{d}')
@@ -329,7 +334,25 @@
           message: '审核通过',
           type: 'success'
         });
+          this.index=0;
           this.dialogFormVisible = false;
+          this.dialogForm={
+          tradeCoin:'',
+          maxBet:'1000000',
+          minBet:'',
+          totalNum:'0',
+          personNum:'0',
+          options:[
+            {
+              onlineInitial:'',
+              optionKey:'A'
+            }
+          ],
+          awardRatioInitiator:'0',
+          awardRatioPlatfrom:'10',
+          awardRatioVoter:'0',
+          betEndTime:'',
+        };
         })
       }
     }

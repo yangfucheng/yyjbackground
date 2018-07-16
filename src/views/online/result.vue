@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-     <el-form :inline="true" :model="formInline" class="from-inline">
+     <!-- <el-form :inline="true" :model="formInline" class="from-inline">
       <el-form-item label="项目时间">
         <el-date-picker
         v-model="formInline.datePicker"
@@ -34,8 +34,8 @@
       <el-form-item>
         <el-button type="primary" @click="onSubmit1()">查询</el-button>
       </el-form-item>
-    </el-form>
-    <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border>
+    </el-form> -->
+    <el-table :data="list" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}" border @row-dblclick="dblclickOnRow">
       <el-table-column prop="title" label="标题" sortable show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.title}}
@@ -119,7 +119,7 @@
         
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button @click="dialogFormVisible1 = false">取 消</el-button>
           <el-button type="primary" @click="onSubmit">确 定</el-button>
         </div>
       </el-dialog>
@@ -191,23 +191,28 @@
       }
     },
     methods: {
+      dblclickOnRow(row){
+        this.$router.push({
+          name:'detail',
+          params:{
+            id:row.id
+          }
+        })
+      },
       fetch(){
         var params = {
-          tradeCoin:this.formInline.tradeCoin,
-          title:this.formInline.title,
+          /*title:this.formInline.title,*/
           pageNo:this.pageNum,
           type:'wait_result',
           // status:'online'
-          status:this.formInline.state
         }
-        if(this.formInline.datePicker != null && this.formInline.datePicker.length > 1){
+        /*if(this.formInline.datePicker != null && this.formInline.datePicker.length > 1){
           params.betStartTime = parseTime(this.searchObj.dateRange[0],'{y}-{m}-{d}')
           params.betEndTime = parseTime(this.searchObj.dateRange[1],'{y}-{m}-{d}')
         } else {
           params.betStartTime = ''
           params.betStartTime = ''
-        }
-
+        }*/
         getManageList(params).then(response =>{
           this.list = response.body.result;
           this.total =response.body.totalCount;
@@ -246,11 +251,12 @@
             this.fetch();
             this.optionCh ='';
             this.option ='';
-        })
+        });
+        this.dialogFormVisible1=false;
       },
-      onSubmit1(){
+      /*onSubmit1(){
         this.fetch();
-      },
+      },*/
       submit(){
         var params ={
           projectId:this.projectId,
@@ -264,7 +270,8 @@
             this.fetch();
             this.optionCh ='';
             this.option ='';
-        })
+        });
+        this.dialogFormVisible=false;
       },
        befor(row,title,type){
          this.projectId =row.id;
@@ -290,7 +297,6 @@
         }
         this.fetch();
         this.beforeReson='';
-        this.dialogFormVisible=false
         this.dialogFormVisible2=false
       }
     }

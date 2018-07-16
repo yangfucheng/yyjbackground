@@ -18,25 +18,25 @@
         <el-option label="等待结果" value="wait_result"></el-option>
         <el-option label="已结束" value="complete"></el-option>
         <el-option label="已作废" value="cancel"></el-option>
+        <el-option label="待投票上线" value="check"></el-option>
+        <el-option label="审核拒绝" value="refuse"></el-option>
+        <el-option label="投票中" value="vote"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="">
         <el-select v-model="formInline.currency" placeholder="请选择货币">
+          <el-option label="BTC" value="BTC"></el-option>
+          <el-option label="ETH" value="ETH"></el-option>
           <el-option label="GXS" value="GXS"></el-option>
           <el-option label="PPS" value="PPS"></el-option>
           <el-option label="ACT" value="ACT"></el-option>
-         
           <el-option label="BCDN" value="BCDN"></el-option>
-        
           <el-option label="CANDY" value="CANDY"></el-option>
-        
-        
           <el-option label="KCASH" value="KCASH"></el-option>
           <el-option label="MAG" value="MAG"></el-option>
           <el-option label="MDS" value="MDS"></el-option>
           <el-option label="NULS" value="NULS"></el-option>
           <el-option label="STC" value="STC"></el-option>
-        
           <el-option label="UIP" value="UIP"></el-option>
           <el-option label="XAS" value="XAS"></el-option>
         </el-select>
@@ -160,7 +160,7 @@
       return {
         formInline: {
           datePicker:'',
-          status:"",
+          state:"",
           title:'',
           currency:'',
         },
@@ -194,7 +194,7 @@
     methods: {
       fetch(){
         var params = {
-          tradeCoin:this.formInline.tradeCoin,
+          tradeCoin:this.formInline.currency,
           title:this.formInline.title,
           pageNo:this.pageNum,
           type:'index',

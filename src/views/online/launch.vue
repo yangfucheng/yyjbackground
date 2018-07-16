@@ -22,7 +22,7 @@
         >
           <input v-model="domain.optionValue" style="border:1px solid #ccc;height: 40px;width:200px;margin-right:10px;"></input><el-button @click.prevent="removeDomain(domain)" style="display: inline-block">删除</el-button>
         </el-form-item>
-          <el-button @click="addDomain" style="margin:-1rem 0 .5rem 6rem;">新增选项</el-button>
+          <el-button @click="addDomain" style="margin-left:100px;margin-bottom:10px">新增选项</el-button>
      <!--  <el-form-item label="最大下注值">
         <el-input v-model="form.maxBet" placeholder="请输C选项"></el-input>
       </el-form-item>
@@ -59,7 +59,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="数据来源">
+        <el-input v-model="form.resultSources" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="数据来源url">
         <el-input v-model="form.resultUrl" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="来源显示">
+        <el-radio v-model="form.resultShow" label="true">是</el-radio>
+        <el-radio v-model="form.resultShow" label="false">否</el-radio>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="buttonLoading">提交</el-button>
@@ -85,14 +92,17 @@ export default {
           notice:'',
           resultUrl:'',
           pic:'',
+          resultShow:'false',
+          resultSources:'点击查看数据来源',
         },
-        index:0,
+        loading:false,
         buttonLoading:false,
-        optionArray:["A","B","C","D","E","F","G","H","I","J","K"]
+        optionArray:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
       }
    },
    methods: {
       handleAvatarSuccess(res, file) {
+        this.loading=false;
         this.form.pic = res.body;
       },
       upload(){
@@ -103,10 +113,10 @@ export default {
         const isJPG =(type === 'image/jpeg'||type==='image/png'||type==='image/jpg'||type==='image/bmp');
         const isLt2M = file.size / 1024 / 1024 < 1;
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是图片格式!');
+          this.$message.error('上传图片只能是图片格式!');
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 1MB!');
+          this.$message.error('上传图片大小不能超过 1MB!');
         }
         return isJPG && isLt2M;
       },
@@ -116,8 +126,11 @@ export default {
 
       // params.projectEndTime="2018-05-11T11:12:14.409Z";
        savePro(params).then(response => {
-         this.form.title = '';
-         this.form.options = [];
+          this.form.title = '';
+          this.form.options =[{
+            optionValue: '',
+            optionKey:'A'
+          }];
          this.form.tag = '';
          this.form.projectEndTime = '';
          this.form.pic='';
@@ -129,20 +142,27 @@ export default {
           message: '提交成功',
           type: 'success'
         });
+        this.form.resultSources='';
+        this.form.resultShow='false';
        })
      },
      removeDomain(item) {
-        this.index--;
-        var index = this.form.options.indexOf(item)
-        if (index !== -1) {
-          this.form.options.splice(index, 1)
+        var index = this.form.options.indexOf(item);1
+        var length=this.form.options.length;4
+        if (index !== -1){
+            this.form.options.splice(index, 1);
+            if(index!=length-1){
+              for(var i=index;i<length-1;i++){
+                this.form.options[i].optionKey=this.optionArray[i];
+              }
+            }
         }
       },
       addDomain() {
-        this.index++;
+        var length=this.form.options.length;
         this.form.options.push({
           optionValue:'' ,
-          optionKey:this.optionArray[this.index],
+          optionKey:this.optionArray[length],
           key: Date.now()
         });
       }
@@ -176,8 +196,8 @@ export default {
     border: 1px dashed #d9d9d9;
   }
   .avatar {
-    width: 360px;
-    height: 180px;
+    max-width: 360px;
+    max-height: 180px;
     display: block;
   }
 </style>

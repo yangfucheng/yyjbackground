@@ -8,7 +8,6 @@ export function getManageList(params) {
   })
 }
 
-
 export function savePro(params) {
   return request({
     url: '/backend/project/save',
@@ -33,7 +32,6 @@ export function detail(params) {
   })
 }
 
-
 export function check(params) {
   return request({
     url: '/backend/project/result/check',
@@ -49,7 +47,7 @@ export function result(params) {
     data: params
   })
 }
- 
+
 // 项目提前结束下注
 export function breakShort(params) {
   return request({
@@ -168,7 +166,7 @@ export function addNetred(params) {
 // 获取网红列表
 export function getNetred(params) {
   return request({
-    url: '/backend/homepage/netred',
+    url: '/backend/homepage/netred/page',
     method: 'get',
     params: params
   })
@@ -177,7 +175,7 @@ export function getNetred(params) {
 // 编辑网红列表
 export function editNetred(params) {
   return request({
-    url: '/backend/homepage/homepage/description',
+    url: '/backend/homepage/netred/update',
     method: 'post',
     data: params
   })
@@ -186,7 +184,7 @@ export function editNetred(params) {
 // 网红列表上下架
 export function uplisting(status, params) {
   return request({
-    url: '/backend/homepage/homepage/netred/' + status,
+    url: '/backend/homepage/netred/' + status,
     method: 'get',
     params: params
   })
@@ -196,6 +194,69 @@ export function uplisting(status, params) {
 export function checkVote(params) {
   return request({
     url: '/backend/project/check',
+    method: 'post',
+    data: params
+  })
+}
+
+// 投票项目编辑
+export function eidtVote(params) {
+  return request({
+    url: '/backend/project/update',
+    method: 'post',
+    data: params
+  })
+}
+
+// 获取轮播分类
+export function getClassifyList(params) {
+  return request({
+    url: '/backend/banner/category/list',
+    method: 'get',
+    params: params
+  })
+}
+
+// 获取轮播图列表
+export function getBannerList(params) {
+  return request({
+    url: '/backend/banner/list',
+    method: 'get',
+    params: params
+  })
+}
+
+// 轮播图信息保存
+export function saveBanner(params) {
+  return request({
+    url: '/backend/banner/save',
+    method: 'post',
+    data: params
+  })
+}
+
+// 轮播图信息更新
+export function updateBanner(params) {
+  return request({
+    url: '/backend/banner/update',
+    method: 'post',
+    data: params
+  })
+}
+
+// 轮播图删除
+export function deleteBanner(params) {
+  return request({
+    url: '/backend/banner/delete',
+    method: 'post',
+    data: params
+  })
+}
+
+// 项目锁
+export function lockProject(params) {
+  return request({
+    url: '/api/project/lock',
     method: 'post',
     data: params
   })

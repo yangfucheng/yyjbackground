@@ -18,7 +18,6 @@
           :label="'选项' + optionArray[index]"
           :key="optionArray[index]"
           :prop="'options.' + index + '.optionValue'"
-
         >
           <input v-model="domain.optionValue" style="border:1px solid #ccc;height: 40px;width:200px;margin-right:10px;"></input><el-button @click.prevent="removeDomain(domain)" style="display: inline-block">删除</el-button>
         </el-form-item>
@@ -32,14 +31,14 @@
       <el-form-item label="货币">
         <el-input v-model="form.tradeCoin" placeholder="请输C选项"></el-input>
       </el-form-item> -->
-      <el-form-item label="开始时间" >
+      <!-- <el-form-item label="开始时间" >
         <el-date-picker v-model="form.projectStartTime" type="datetime" placeholder="选择日期时间">
         </el-date-picker>
       </el-form-item>
        <el-form-item label="结束时间" >
              <el-date-picker v-model="form.projectEndTime" type="datetime" placeholder="选择日期时间">
              </el-date-picker>
-          </el-form-item>
+          </el-form-item> -->
       <el-form-item label="话题归类">
         <el-select v-model="form.tag" placeholder="请选择话题归类">
           <el-option label="金融" value="finance"></el-option>
@@ -87,8 +86,6 @@ export default {
             optionKey:'A'
           }],
           tag:'',
-          projectStartTime:'',
-          projectEndTime:'',
           notice:'',
           resultUrl:'',
           pic:'',
@@ -132,10 +129,8 @@ export default {
             optionKey:'A'
           }];
          this.form.tag = '';
-         this.form.projectEndTime = '';
          this.form.pic='';
          this.form.resultUrl='';
-         this.form.projectStartTime='';
          this.form.notice='';
          this.buttonLoading = false;
          this.$message({

@@ -17,14 +17,14 @@
           <input v-model="domain.predictOdds" class='inline'/>%(预计发生概率)<el-button @click.prevent="removeDomain(domain)" style="margin-left: 10px">删除</el-button>
         </el-form-item>
           <el-button @click="addDomain()" style="margin:0 0 20px 100px;">新增选项</el-button>
-      <el-form-item label="开始时间" >
+      <!-- <el-form-item label="开始时间" >
         <el-date-picker v-model="ruleform.projectStartTime" type="datetime" placeholder="选择日期时间">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="结束时间" >
         <el-date-picker v-model="ruleform.projectEndTime" type="datetime" placeholder="选择日期时间">
         </el-date-picker>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="数据来源">
         <el-input v-model="ruleform.resultSources" auto-complete="off"></el-input>
       </el-form-item>
@@ -151,8 +151,6 @@ export default {
           title:'',
           options:[],
           tag:'',
-          projectStartTime:'',
-          projectEndTime:'',
           resultUrl:'',
           notice:'',
           resultSources:'',
@@ -268,7 +266,7 @@ export default {
         }
       },
       update(){
-        var params={id:this.projectId,projectStartTime:this.ruleform.projectStartTime,title:this.ruleform.title,projectEndTime:this.ruleform.projectEndTime,notice:this.ruleform.notice,options:this.ruleform.options,resultUrl:this.ruleform.resultUrl,resultShow:this.ruleform.resultShow,resultSources:this.ruleform.resultSources};
+        var params={id:this.projectId,title:this.ruleform.title,notice:this.ruleform.notice,options:this.ruleform.options,resultUrl:this.ruleform.resultUrl,resultShow:this.ruleform.resultShow,resultSources:this.ruleform.resultSources};
         eidtVote(params).then(response => {
             this.$message({
               message: '修改成功',

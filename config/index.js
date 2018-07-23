@@ -58,9 +58,9 @@ module.exports = {
   build: {
     // Template for index.html
     
-    index: path.resolve(__dirname, 'D:/tjq/ppscontro/src/main/webapp/WEB-INF/ht/index.html'),
+    index: path.resolve(__dirname, '/Users/leehom/Documents/yyj/prophet/src/main/webapp//WEB-INF/ht/index.html'),
     // Paths
-    assetsRoot: path.resolve(__dirname, 'D:/tjq/ppscontro/src/main/webapp/WEB-INF/ht'),
+    assetsRoot: path.resolve(__dirname, '/Users/leehom/Documents/yyj/prophet/src/main/webapp/WEB-INF/ht/'),
 
     assetsSubDirectory: 'static',
 

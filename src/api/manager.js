@@ -261,3 +261,32 @@ export function lockProject(params) {
     data: params
   })
 }
+
+// PK模板村粗
+export function modelSave(params) {
+  return request({
+    url: '/backend/pkModel/save',
+    method: 'post',
+    data: params
+  })
+}
+
+// PK模板修改
+export function updateModel(params) {
+  return request({
+    url: '/backend/pkModel/update',
+    method: 'post',
+    data: params
+  })
+}
+
+// 获取轮播图列表
+export function getModel(params) {
+  return request({
+    url: 'backend/pkModel/page',
+    method: 'get',
+    params: params
+  })
+}
+
+

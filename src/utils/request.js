@@ -2,18 +2,17 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
-import { loginOut} from '../api/login.js'
+// import { loginOut } from '../api/login.js'
 
 // 创建axios实例
 var service = axios.create({
   // withCredentials: true,
   // headers:{'Content-Type':'application/x-www-form-urlencoded'},
-  headers: {'X-Requested-With':'XMLHttpRequest'}
+  headers: {'X-Requested-With': 'XMLHttpRequest' },
   // baseURL: 'http://localhost:8080'
-});
+})
 
-
-// request拦截器
+// request拦截器  
 service.interceptors.request.use(config => {
   if (getToken()) {
     config.headers['Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
@@ -46,9 +45,9 @@ service.interceptors.response.use(
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          if(getToken()){
-          	localStorage.removeItem('yyj');
-          }else{
+          if (getToken()) {
+          	localStorage.removeItem('yyj')
+          } else {
           	location.reload()// 为了重新实例化vue-router对象 避免bug
           }
         })

@@ -145,6 +145,37 @@ export const constantRouterMap = [
       },
     ]
   },
+  {
+    path: '/pk',
+    component: Layout,
+    meta: { title: 'PK项目管理', icon: 'tree' },
+    children: [
+      // {
+      //   path: 'index',
+      //   name: 'Form',
+      //   component: () => import('@/views/form/index'),
+      //   meta: { title: '投票项目管理', icon: 'table' }
+      // },
+      // { 
+      //   path: 'pklist',
+      //   name: 'pklist', 
+      //   component: () => import('../../src/views/pk/pklist.vue'),
+      //   meta: { title: '项目发起', icon: 'table' }
+      // },
+      {
+        path: 'pkmuban',
+        name: 'pkmuban',
+        component: () => import('@/views/pk/pkmuban'),
+        meta: { title: 'PK模板', icon: 'table' }
+      },
+      // {
+      //   path: 'leixing',
+      //   name: 'leixing',
+      //   component: () => import('@/views/pk/leixing'),
+      //   meta: { title: 'PK类型', icon: 'table' }
+      // },
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

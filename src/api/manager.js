@@ -118,6 +118,15 @@ export function batchCheck(params) {
   })
 }
 
+// 提现拒绝
+export function refuse(params) {
+  return request({
+    url: '/backend/wallet/withdraw/refuse',
+    method: 'post',
+    params: params
+  })
+}
+
 // 搜索评论
 export function searchComment(params) {
   return request({
@@ -286,6 +295,44 @@ export function getModel(params) {
     url: 'backend/pkModel/page',
     method: 'get',
     params: params
+  })
+}
+
+// 红包模板列表
+export function hbModelList(params) {
+  return request({
+    url: '/backend/redPacket/model/page',
+    method: 'get',
+    params: params
+  })
+}
+
+// 红包列表
+export function hblList(params) {
+  return request({
+    url: '/backend/redPacket/page',
+    method: 'get',
+    params: params
+  })
+}
+
+// 用户网红接口
+export function redSearch(params) {
+  return request({
+    url: '/backend/user/search',
+    method: 'get',
+    params: params
+  })
+}
+
+
+
+// 红包模板修改
+export function updateHbModel(params) {
+  return request({
+    url: 'backend/redPacket/model/save',
+    method: 'post',
+    data: params
   })
 }
 

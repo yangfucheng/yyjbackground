@@ -24,8 +24,6 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
- 
-
   {
     path: '/',
     component: Layout,
@@ -36,10 +34,10 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: () => import('@/views/dashboard/index')
     },
-     { 
+    { 
       path: 'online/detail',
       name: 'detail', 
-      component: () => import('@/views/online/detail')
+      component: () => import('@/views/online/detail'), 
     },
     ]
   },
@@ -174,6 +172,25 @@ export const constantRouterMap = [
       //   component: () => import('@/views/pk/leixing'),
       //   meta: { title: 'PK类型', icon: 'table' }
       // },
+    ]
+  },
+  {
+    path: '/hongbao',
+    component: Layout,
+    meta: { title: '红包项目管理', icon: 'tree' },
+    children: [
+      {
+        path: 'pkmuban',
+        name: 'pkmuban',
+        component: () => import('@/views/hongbao/hb'),
+        meta: { title: '红包模板', icon: 'table' }
+      },
+      {
+        path: 'al-hb-list',
+        name: 'alHb',
+        component: () => import('@/views/hongbao/alHb'),
+        meta: { title: '已发红包', icon: 'table' }
+      },
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

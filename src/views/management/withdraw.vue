@@ -8,6 +8,10 @@
                 <el-select v-model="status" placeholder="请选择"> 
                     <el-option v-for="item in options" :key="item.status" :label="item.value" :value="item.status"></el-option>
                 </el-select>
+                <el-select v-model="typeB" placeholder="选择钱包"> 
+                    <el-option label="布洛克城钱包" value="block_pay" ></el-option>
+                    <el-option label="数字钱包" value="token_wallet" ></el-option>
+                </el-select>
                 <el-select v-model="tradeCoin" placeholder="请选择币种">
                     <el-option label="全部币种" value="" ></el-option>
                     <el-option label="PPS" value="PPS" ></el-option>
@@ -47,7 +51,8 @@
             </el-table-column>
             <el-table-column label="操作" width="140px">
                 <template scope="scope">
-                    <el-button size="small"  type="text" v-if="scope.row.status=='init'" @click="check('only',scope.row.id)">审核</el-button>
+                    <el-button size="small"  type="text" v-show="scope.row.status=='init'" @click="check('only',scope.row.id)">审核</el-button>
+                    <el-button size="small"  type="text" v-show="scope.row.status=='init'" @click="refuseDraw(scope.row.id)">拒绝</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -59,7 +64,7 @@
     <div style="margin-top: 20px">
         <el-button @click="toggleSelection()">取消选择</el-button>
         <el-button type="primary" @click='check("list")'>批量审核</el-button>
-        <el-button type="primary" @click='check("all")'>一键审核</el-button>
+        <!-- <el-button type="primary" @click='check("all")'>一键审核</el-button> -->
     </div>
     </div>
     <el-dialog title="确认审核" :visible.sync="dialogFormVisible">
@@ -73,11 +78,24 @@
       <el-button type="primary" @click="submit">确 定</el-button>
     </div>
     </el-dialog>
+
+
+    <el-dialog title="确认拒绝" :visible.sync="dialogFormVisible1">
+    <el-form >
+      <el-form-item label="拒绝原因" label-width="100">
+        <el-input v-model="memo" auto-complete="off"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible1= false">取 消</el-button>
+      <el-button type="primary" @click="refuseData">确 定</el-button>
+    </div>
+    </el-dialog>
 </div>
 </template>
 
 <script>
-import {withdrawList,allCheck,batchCheck} from '../../api/manager.js'
+import {withdrawList,allCheck,batchCheck,refuse} from '../../api/manager.js'
 import { timestampToTime} from '../../utils/enum.js'
  var qs=require("qs");
 export default {
@@ -94,6 +112,10 @@ export default {
                 coin:'',
                 ids:[],
                 type:'',
+                memo:'',
+                refuseId:'',
+                typeB:'block_pay',
+                dialogFormVisible1:false
             };
         },
         filters: {
@@ -123,6 +145,7 @@ export default {
                 var status=this.status;
                 var tradeCoin=this.tradeCoin;
                 var page=page==undefined?1:page;
+                var type = this.typeB;
                 var params={};
                 if(tradeCoin!=''){
                     params.coin=tradeCoin;
@@ -130,21 +153,52 @@ export default {
                 if(status!=''){
                     params.status=status;
                 }
+                 if(type!=''){
+                    params.type=type;
+                }
                 params.pageNo=page;
                 this.getData(params);
             },
-            check(type,id){
+            check(type,id){ 
             	this.ids=[];
                 this.pwd='';
             	this.type=type;
                 if(type=='only'){
                     this.ids.push(id);
+                    if(this.typeB == 'token_wallet'){
+                        batchCheck({ids:this.ids}).then(response=>{
+                            this.$message({
+                            message: '审核成功',
+                            type: 'success'
+                            });
+                            this.dialogFormVisible=false;
+                            this.getData({pageNo:1});
+                        }).catch(err=>{
+                            this.dialogFormVisible=false;
+                        });
+                        this.getData({pageNo:1,status:'init',type:this.typeB});
+                        return;
+                    }
                     this.dialogFormVisible=true;
                 }else if(type=='list'){
                 	if(this.multipleSelection.length){
                 		for(var i=0;i<this.multipleSelection.length;i++){
                 			this.ids.push(this.multipleSelection[i].id);
-                		}
+                        }
+                        if(this.typeB == 'token_wallet'){
+                            batchCheck({ids:this.ids}).then(response=>{
+                                this.$message({
+                                message: '审核成功',
+                                type: 'success'
+                                });
+                                this.dialogFormVisible=false;
+                                this.getData({pageNo:1});
+                            }).catch(err=>{
+                                this.dialogFormVisible=false;
+                            });
+                            this.getData({pageNo:1,status:'init',type:this.typeB});
+                            return;
+                        }
                         this.dialogFormVisible=true;
                 	}else{
                         alert('请先勾选');
@@ -152,6 +206,25 @@ export default {
                 }else if(type=='all'){
                     this.dialogFormVisible=true;
                 }
+            },
+            refuseDraw(id){
+                this.dialogFormVisible1 = true;
+                this.refuseId = id;
+            },
+            refuseData(){
+                var params={
+                    id:this.refuseId,
+                    memo:this.memo
+                }
+                refuse(params).then(res=>{
+                    this.$message({
+                        message: '拒绝成功',
+                        type: 'success'
+                    });
+                })
+                this.dialogFormVisible1 = false;
+                this.memo='';
+                this.getData({pageNo:1,status:'init',type:this.typeB});
             },
             submit(){
                 if(this.pwd.trim()==''){
@@ -213,7 +286,7 @@ export default {
             }
         },
          mounted:function(){
-            this.getData({pageNo:1,status:'init'});
+            this.getData({pageNo:1,status:'init',type:this.typeB});
         }
 }
 </script>

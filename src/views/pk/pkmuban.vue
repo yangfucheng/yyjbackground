@@ -137,26 +137,6 @@
             <el-button type="primary" @click="updateTem" v-show="form.id">修改</el-button>
         </div>
     </el-dialog>
-    <!-- <el-dialog title="编辑" :visible.sync="dialogFormVisible2">
-        <el-form label-width="100px">
-            <el-form-item label="输入权重" prop='weight'>
-                <el-input v-model="weight" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="输入抽成" prop='ratio'>
-                <el-input v-model="ratio" auto-complete="off"></el-input>%
-            </el-form-item>
-            <el-form-item label="输入简介" prop='intro'>
-                <el-input v-model="intro" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="输入备注" prop='remarks'>
-                <el-input v-model="remarks" auto-complete="off"></el-input>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-            <el-button type="primary" @click="submit1">确 定</el-button>
-        </div>
-    </el-dialog> -->
     </div>
 </template>
 
@@ -222,6 +202,7 @@
     },
     methods: {
         add(){
+          this.form = {};
           this.dialogFormVisible=true;
         },
         saveTem(){

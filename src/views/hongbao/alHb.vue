@@ -45,6 +45,7 @@
         <el-input v-model="formInline.title" placeholder="请输入标题"></el-input>
       </el-form-item>
     <el-form-item>
+      <el-button type="primary" @click="onSubmit()">查询</el-button>
     </el-form-item>
   </el-form>
   <el-table :data="list"   v-loading="loading2">

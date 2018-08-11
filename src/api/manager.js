@@ -325,8 +325,6 @@ export function redSearch(params) {
   })
 }
 
-
-
 // 红包模板修改
 export function updateHbModel(params) {
   return request({

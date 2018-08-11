@@ -48,20 +48,22 @@
        <el-pagination  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="tableData.pageNo" :page-size="tableData.pageSize" layout=" prev, pager, next,jumper" :total="tableData.totalCount" style="float:right;">
        </el-pagination>
     </el-col>
-    <el-dialog title="新增网红" :visible.sync="dialogFormVisible">
+    <el-dialog title="新增模板" :visible.sync="dialogFormVisible">
        <el-form>
             <el-form ref="form" :model="form" label-width="100px">
                 <el-form-item label="红包标题">
                     <el-input v-model="form.title" placeholder="请输入话题标题"></el-input>
                 </el-form-item>
                   <el-form-item label="红包发起人">
-                     <el-autocomplete
-                        v-model="form.initiatorId"
-                        :fetch-suggestions="querySearchAsync"
-                        placeholder="请输入内容"
-                        @select="handleSelect"
-                        >
-                    </el-autocomplete>
+                    <input v-model="queryString"  style="height:40px;width:200px;border:1px solid #ccc;padding:0 20px" placeholder="先输入号码,再去隔壁选择" >
+                    <el-select v-model="form.initiatorId" placeholder="请选择">
+                        <el-option
+                        v-for="item in infoArray"
+                        :key="item.initiatorId"
+                        :label="item.userName"
+                        :value="item.id">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="显示页面">
                     <el-select v-model="form.place" placeholder="选择话题类型">
@@ -100,7 +102,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="奖励数量">
-                    <el-input v-model="form.awardAmount" auto-complete="off"></el-input>
+                    <el-input v-model="form.amount" auto-complete="off"></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="抢到概率">
                     <el-input v-model="form.awardAmount" auto-complete="off"></el-input>
@@ -157,7 +159,7 @@
 </template>
 
 <script>
-  import { hblList,updateHbModel } from '../../api/manager.js'
+  import { hbModelList,updateHbModel,redSearch } from '../../api/manager.js'
   import { timestampToTime } from '../../utils/enum.js'
   export default {
     data(){
@@ -166,6 +168,7 @@
         tableData:{},
         loading2:false,
         tel:'',
+        queryString:'',
         dialogFormVisible:false,
         dialogFormVisible2:false,
         intro:'',
@@ -176,11 +179,13 @@
         userName:'',
         telephone:'',
         redMsg:'',
+        loading:false,
+        infoArray:[],
         form: {
           title:'',
           initiatorId:'',
           place:'',
-          awardAmount:'',//获得奖励
+          amount:'',//获得奖励
           maxValidAmount:'',//份数上限
           minValidAmount:'',//份数下限
           probability:'',//概率
@@ -193,6 +198,11 @@
           circulate:false
         },
       }
+    },
+    watch:{
+        'queryString'(){
+            this.remoteMethod(this.queryString);
+        }
     },
     created() {
        this.getData({pageNo:1});
@@ -220,11 +230,14 @@
     },
     methods: {
         add(){
+          this.form = {};
           this.dialogFormVisible=true;
         },
         saveTem(){
             var params = this.form;
-             modelSave(params).then(response=>{
+            // params.initiatorId = this.form.initiatorId[0];
+            alert(this.form.initiatorId)
+             updateHbModel(params).then(response=>{
                 this.$message({
                     message: '添加成功',
                     type: 'success'
@@ -233,20 +246,27 @@
                 this.search(1);
             });
         },
-        querySearchAsync(queryString,callback){
+        remoteMethod(queryString){
             var params = {
                 telphone:queryString,
-                userName:queryString
             }
-            redSearch(params).then(res=>{
-               callback(res.body.result);
-            })
+            if(queryString!== ''){
+                this.loading = true;
+                redSearch(params).then(res=>{
+                    this.infoArray = res.body;
+                      this.loading = false;
+                })
+            }else{
+                this.infoArray = [];
+            }
+           
         },
         handleSelect(){
 
         },
         updateTem(){
             var params = this.form;
+            // params.initiatorId = this.form.initiatorId[0];
              updateHbModel(params).then(response=>{
                 this.$message({
                     message: '添加成功',
@@ -289,12 +309,13 @@
         edit(row){
            this.form = row;
            this.form.id = row.id;
+           this.form.initiatorId =row.initiatorId;
            this.dialogFormVisible=true;
         },
         getData(params){
             var self=this;
             this.loading2=true;
-            hblList(params).then(
+            hbModelList(params).then(
                 function(res){
                     var json=res.body;
                     self.tableData=json;

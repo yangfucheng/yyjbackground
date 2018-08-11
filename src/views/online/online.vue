@@ -195,7 +195,7 @@
             }
           ],
           awardRatioInitiator:'0',
-          awardRatioPlatfrom:'10',
+          awardRatioPlatfrom:'8',
           awardRatioVoter:'0',
           betEndTime:'',
         },
@@ -239,14 +239,14 @@
       },
       changeCoin(){
         if(this.dialogForm.tradeCoin=='GXS'){
-          this.dialogForm.maxBet=100;
-          this.dialogForm.minBet=0.05;
+          this.dialogForm.maxBet=10000;
+          this.dialogForm.minBet=0.1;
         }else if(this.dialogForm.tradeCoin=='PPS'){
-          this.dialogForm.maxBet=100;
-          this.dialogForm.minBet=1;
+          this.dialogForm.maxBet=10000;
+          this.dialogForm.minBet=2;
         }else if(this.dialogForm.tradeCoin=='CANDY'){
-          this.dialogForm.maxBet=100;
-          this.dialogForm.minBet=500;
+          this.dialogForm.maxBet=10000;
+          this.dialogForm.minBet=1000;
         }
       },
       addDomain() {

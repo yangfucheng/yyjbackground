@@ -55,7 +55,7 @@
         </el-table-column>
         <el-table-column prop="inUse" label="页面显示">
             <template slot-scope="scope">
-                {{scope.row.inUse | changStatus}}
+                {{scope.row.place | changStatus1}}
             </template>
         </el-table-column>
         <el-table-column prop="startTime" label="开始时间">
@@ -67,7 +67,7 @@
         </el-table-column>
         <el-table-column prop="inUse" label="是否上架">
                 <template slot-scope="scope">
-                {{scope.row.inUse | changStatus1}}
+                {{scope.row.inUse | changStatus}}
             </template>
         </el-table-column>
         <el-table-column label="操作" width="140px">
@@ -126,8 +126,21 @@
         return timestampToTime(value)
       },
       changStatus(value){
-        return getNameById(OrderStatus,value)
-      }
+          if(value==1){
+             return '已上架';
+          }else{
+             return '已下架';
+          }
+      },
+      changStatus1(value){
+          if(value=='index'){
+             return '预测市场';
+          }else if(value == 'pk'){
+              return '预测PK';
+          }else{
+             return '网红';
+          }
+      },
     },
     methods: {
       fetch(){

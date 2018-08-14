@@ -23,7 +23,7 @@
         </el-table-column>
         <el-table-column prop="inUse" label="页面显示">
             <template slot-scope="scope">
-                {{scope.row.inUse | changStatus}}
+                {{scope.row.place | changStatus}}
             </template>
         </el-table-column>
         <el-table-column prop="startTime" label="开始时间">
@@ -166,6 +166,7 @@
       return {
         isOpen:'',
         tableData:{},
+        list:[],
         loading2:false,
         tel:'',
         queryString:'',
@@ -236,7 +237,6 @@
         saveTem(){
             var params = this.form;
             // params.initiatorId = this.form.initiatorId[0];
-            alert(this.form.initiatorId)
              updateHbModel(params).then(response=>{
                 this.$message({
                     message: '添加成功',
@@ -319,6 +319,7 @@
                 function(res){
                     var json=res.body;
                     self.tableData=json;
+
                     self.loading2=false;
                 }
             ).catch(function(err){

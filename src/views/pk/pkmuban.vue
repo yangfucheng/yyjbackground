@@ -207,6 +207,14 @@
         },
         saveTem(){
             var params = this.form;
+            params.options = [{
+                optionValue: '奇数',
+                optionKey:'A',
+            },
+            {
+                optionValue: '偶数',
+                optionKey:'B',
+            }],
              modelSave(params).then(response=>{
                 this.$message({
                     message: '添加成功',
@@ -218,6 +226,16 @@
         },
         updateTem(){
             var params = this.form;
+            params.options = [{
+                optionValue: '奇数',
+                optionKey:'A',
+                modelId:this.form.id
+            },
+            {
+                optionValue: '偶数',
+                optionKey:'B',
+                modelId:this.form.id
+            }],
              updateModel(params).then(response=>{
                 this.$message({
                     message: '添加成功',
@@ -244,18 +262,18 @@
                 return;          
             });
         },
-        removeDomain(item) {
-            var index = this.form.options.indexOf(item);1
-            var length=this.form.options.length;4
-            if (index !== -1){
-                this.form.options.splice(index, 1);
-                if(index!=length-1){
-                for(var i=index;i<length-1;i++){
-                    this.form.options[i].optionKey=this.optionArray[i];
-                }
-                }
-            }
-        },
+        // removeDomain(item) {
+        //     var index = this.form.options.indexOf(item);1
+        //     var length=this.form.options.length;4
+        //     if (index !== -1){
+        //         this.form.options.splice(index, 1);
+        //         if(index!=length-1){
+        //         for(var i=index;i<length-1;i++){
+        //             this.form.options[i].optionKey=this.optionArray[i];
+        //         }
+        //         }
+        //     }
+        // },
         addDomain() {
             // var  length =0;
             // if(this.form.options && this.form.options.length){

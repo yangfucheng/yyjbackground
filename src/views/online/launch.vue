@@ -10,7 +10,6 @@
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
       </el-form-item>
-      <!--  -->
       <el-form-item label="话题描述">
         <el-input type="textarea" v-model="form.notice" style='width:500px;'></el-input>
       </el-form-item>
@@ -42,13 +41,17 @@
           </el-form-item> -->
       <el-form-item label="话题归类">
         <el-select v-model="form.tag" placeholder="请选择话题归类">
-          <el-option label="金融" value="finance"></el-option>
-          <el-option label="体育" value="pe"></el-option>
-            <el-option label="电竞" value="dianjing"></el-option>
+        <el-option label="金融" value="finance"></el-option>
+        <el-option label="体育" value="pe"></el-option>
+          <el-option label="电竞" value="dianjing"></el-option>
           <el-option label="区块链" value="entertainment"></el-option>
           <el-option label="其他" value="other"></el-option>
-        
-           <!--  <el-option label="我的" value="mine"></el-option> -->
+          <el-option label="田径运动" value="tj"></el-option>
+          <el-option label="球类运动" value="ql"></el-option>
+          <el-option label="水上运动" value="shui"></el-option>
+          <el-option label="体操" value="bm"></el-option>
+          <el-option label="格斗武术" value="gd"></el-option>
+          <el-option label="亚运会其它" value="other1"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="数据来源">

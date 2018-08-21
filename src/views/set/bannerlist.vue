@@ -31,6 +31,12 @@
                     <el-option :label="item.categoryDes" :value="item.id"  v-for='item in cateList' :key='item.id'></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="是否外链" >
+                <el-select v-model="form.isOuterUrl" placeholder="请选择是否外链">
+                     <el-option label="否" value="0"></el-option>
+                     <el-option label="是" value="1"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="轮播图描述">
                 <el-input v-model="form.description" auto-complete="off"></el-input>
             </el-form-item>
@@ -72,6 +78,7 @@
             description:'',
             directUrl:'',
             sort:'',
+            isOuterUrl:0,
         },
         banner:'',
         cateList:[],
@@ -145,8 +152,9 @@
                     let description=this.form.description;
                     let directUrl=this.form.directUrl;
                     let categoryId=this.form.categoryId;
+                    let isOuterUrl  = this.form.isOuterUrl;
                     let sort=this.form.sort;
-                    let params={banner:banner,description:description,directUrl:directUrl,categoryId:categoryId,sort:sort};
+                    let params={banner:banner,description:description,directUrl:directUrl,categoryId:categoryId,sort:sort,isOuterUrl:isOuterUrl};
                     if(this.msg!='新增轮播图'){
                         params.id=this.id;
                         datafun=updateBanner;

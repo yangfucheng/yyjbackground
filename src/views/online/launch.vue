@@ -52,6 +52,7 @@
           <el-option label="体操" value="bm"></el-option>
           <el-option label="格斗武术" value="gd"></el-option>
           <el-option label="亚运会其它" value="other1"></el-option>
+          <el-option label="七夕活动" value="qixi"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="数据来源">

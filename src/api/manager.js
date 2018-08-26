@@ -334,4 +334,13 @@ export function updateHbModel(params) {
   })
 }
 
+// 周数据
+export function weekData(params) {
+  return request({
+    url: 'backend/forecast/weekBazaar',
+    method: 'get',
+    params: params
+  })
+}
+
 

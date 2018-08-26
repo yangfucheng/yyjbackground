@@ -46,7 +46,7 @@ service.interceptors.response.use(
           type: 'warning'
         }).then(() => {
           if (getToken()) {
-          	localStorage.removeItem('yyj')
+           this.$router.push('/login')
           } else {
           	location.reload()// 为了重新实例化vue-router对象 避免bug
           }

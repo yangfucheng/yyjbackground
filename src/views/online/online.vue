@@ -199,7 +199,7 @@
           awardRatioVoter:'0',
           betEndTime:'',
         },
-        optionArray:["A","B","C","D","E","F","G","H","I","J","K"],
+        optionArray:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
         optionsArray:[],
         dialogFormVisible:false,
         dialogFormVisible2:false,

@@ -53,6 +53,10 @@
           <el-option label="格斗武术" value="gd"></el-option>
           <el-option label="亚运会其它" value="other1"></el-option>
           <el-option label="七夕活动" value="qixi"></el-option>
+          <el-option label="直通冠军" value="zt"></el-option>
+          <el-option label="荣誉光环" value="ry"></el-option>
+          <el-option label="枪王之王" value="qw"></el-option>
+          <el-option label="生存达人" value="sc"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="数据来源">

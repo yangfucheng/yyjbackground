@@ -193,8 +193,8 @@ export const constantRouterMap = [
     meta: { title: 'fomo3d', icon: 'tree' },
     children: [
       {
-        path: 'pkmuban',
-        name: 'pkmuban',
+        path: 'fomo-muban',
+        name: 'fomomuban',
         component: () => import('@/views/fomo/model'),
         meta: { title: 'fomo模板', icon: 'table' }
       },

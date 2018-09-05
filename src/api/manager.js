@@ -343,4 +343,21 @@ export function weekData(params) {
   })
 }
 
+//fomo模板列表
+export function fomoModel(params) {
+  return request({
+    url: '/backend/fomo/template/page',
+    method: 'get',
+    params: params
+  })
+}
+
+//保存fomo模板
+export function fomoSave(params) {
+  return request({
+    url: '/backend/fomo/template/save',
+    method: 'post',
+    data: params
+  })
+}
 

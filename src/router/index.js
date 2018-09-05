@@ -166,12 +166,6 @@ export const constantRouterMap = [
         component: () => import('@/views/pk/pkmuban'),
         meta: { title: 'PK模板', icon: 'table' }
       },
-      // {
-      //   path: 'leixing',
-      //   name: 'leixing',
-      //   component: () => import('@/views/pk/leixing'),
-      //   meta: { title: 'PK类型', icon: 'table' }
-      // },
     ]
   },
   {
@@ -190,6 +184,19 @@ export const constantRouterMap = [
         name: 'alHb',
         component: () => import('@/views/hongbao/alHb'),
         meta: { title: '已发红包', icon: 'table' }
+      },
+    ]
+  },
+  {
+    path: '/fomo3d',
+    component: Layout,
+    meta: { title: 'fomo3d', icon: 'tree' },
+    children: [
+      {
+        path: 'pkmuban',
+        name: 'pkmuban',
+        component: () => import('@/views/fomo/model'),
+        meta: { title: 'fomo模板', icon: 'table' }
       },
     ]
   },

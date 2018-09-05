@@ -46,17 +46,7 @@
           <el-option label="电竞" value="dianjing"></el-option>
           <el-option label="区块链" value="entertainment"></el-option>
           <el-option label="其他" value="other"></el-option>
-          <el-option label="田径运动" value="tj"></el-option>
-          <el-option label="球类运动" value="ql"></el-option>
-          <el-option label="水上运动" value="shui"></el-option>
-          <el-option label="体操" value="bm"></el-option>
-          <el-option label="格斗武术" value="gd"></el-option>
-          <el-option label="亚运会其它" value="other1"></el-option>
-          <el-option label="七夕活动" value="qixi"></el-option>
-          <el-option label="直通冠军" value="zt"></el-option>
-          <el-option label="荣誉光环" value="ry"></el-option>
-          <el-option label="枪王之王" value="qw"></el-option>
-          <el-option label="生存达人" value="sc"></el-option>
+           <el-option label="lol电竞" value="lol"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="数据来源">

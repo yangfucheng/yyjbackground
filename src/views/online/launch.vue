@@ -47,6 +47,8 @@
           <el-option label="区块链" value="entertainment"></el-option>
           <el-option label="其他" value="other"></el-option>
            <el-option label="lol电竞" value="lol"></el-option>
+             <el-option label="GXS矿池" value="gxs"></el-option>
+               <el-option label="PPS矿池" value="pps"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="数据来源">

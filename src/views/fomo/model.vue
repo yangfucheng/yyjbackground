@@ -102,6 +102,8 @@
                     <el-option label="区块链" value="entertainment"></el-option>
                     <el-option label="其他" value="other"></el-option>
                     <el-option label="lol电竞" value="lol"></el-option>
+                    <el-option label="GXS矿池" value="gxs"></el-option>
+                    <el-option label="PPS矿池" value="pps"></el-option>
                 </el-select>
                     <el-button @click.prevent="removeDomain(domain,1)" style="display: inline-block">删除</el-button>
               
@@ -111,10 +113,10 @@
 
 
                 <el-form-item
-                    v-for="(domain, index) in form.options2"
+                    v-for="(domain, index) in form.betRules"
                     :label="'单次下注量：'"
                     :key="domain.key"
-                    :prop="'options2.' + index + '.pool'"
+                    :prop="'betRules.' + index + '.pool'"
                     >
                
                 <input v-model="domain.pool" style="border:1px solid #ccc;height: 40px;width:200px;margin-right:10px;" placeholder="奖池/gxs">
@@ -126,10 +128,10 @@
                 <el-button @click="addDomain(2)" style="margin-left:100px;margin-bottom:10px">新增选项</el-button>
 
                  <el-form-item
-                    v-for="(domain, index) in form.options3"
+                    v-for="(domain, index) in form.keyRules"
                     :label="'KEY梯度'"
                     :key="domain.key"
-                    :prop="'options3.' + index + '.pool'"
+                    :prop="'keyRules.' + index + '.pool'"
                     >
                
                  <input v-model="domain.pool" style="border:1px solid #ccc;height: 40px;width:200px;margin-right:10px;" placeholder="奖池">
@@ -160,7 +162,7 @@
                 </el-form-item>
 
                  <el-form-item label="KEY持有奖励发放间隔周期:">
-                    <el-input v-model="form.keyAwardTime" placeholder="KEY持有奖励发放间隔周期"></el-input>%
+                    <el-input v-model="form.keyAwardTime" placeholder="KEY持有奖励发放间隔周期"></el-input>min
                 </el-form-item>
 
                  <el-form-item label="场次间隔周期:">
@@ -223,17 +225,9 @@
         isOpen:'',
         tableData:{},
         loading2:false,
-        tel:'',
         time:[],
         dialogFormVisible:false,
         dialogFormVisible2:false,
-        intro:'',
-        ratio:'',
-        remarks:'',
-        weight:'',
-        userId:'',
-        userName:'',
-        telephone:'',
         optionArray:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
         form: {
           title:'',
@@ -242,31 +236,22 @@
             optionKey:'A'
           }],
 
-          options2:[{
+          betRules:[{
             pool: '',
             rule:'',
             optionKey:'A'
           }],
 
-          options3:[{
+          keyRules:[{
             pool: '',
             rule:'',
             optionKey:'A'
           }],
-
           projectTags:[],
-
-          awardAmount:'',//获得奖励
-          awardTradeCoin:'',//获得币种
-          betTradeCoin:'',//参与币种
-          resultUrl:'',
-          betAmount:'',
-          pic:'',
           id:'',
-          betAmount:'',//下注金额
           inUse:false,//是否上架
-          type:'猜奇偶',
-          index:1
+          index:1,
+          type:''
         },
       }
     },
@@ -277,9 +262,7 @@
       changeTime(value){
         return timestampToTime(value)
       },
-    // changStatus(value){
-    //     return getNameById(OrderStatus)
-    //   },
+ 
       changStatus(value){
           if(value==1){
              return '已上架';
@@ -290,6 +273,32 @@
     },
     methods: {
         add(){
+          this.form = {
+          title:'',
+          options:[{
+            optionValue: '',
+            optionKey:'A'
+          }],
+
+          betRules:[{
+            pool: '',
+            rule:'',
+            optionKey:'A'
+          }],
+
+          keyRules:[{
+            pool: '',
+            rule:'',
+            optionKey:'A'
+          }],
+
+          projectTags:[],
+          
+          id:'',
+          inUse:false,//是否上架
+          type:'猜奇偶',
+          index:1
+        },
           this.dialogFormVisible=true;
         },
         saveTem(){
@@ -297,12 +306,9 @@
             for (const key in this.form.options) {
                 this.form.projectTags.push(this.form.options[key].optionValue);
             }
-            
              var params = this.form;
              params.stopStartTime=this.time[0];
              params.stopEndTime=this.time[1];
-             params.betRules = this.form.options2;
-             params.keyRules = this.form.options3;
              fomoSave(params).then(response=>{
                 this.$message({
                     message: '添加成功',
@@ -313,18 +319,9 @@
             });
         },
         updateTem(){
-        //     this.form.projectTags = [];
-        //    for (const key in this.form.options) {
-        //         this.form.projectTags.push(this.form.options[key].optionValue);
-        //     }
-            
              var params = this.form;
-            params.stopStartTime=this.time[0];
+             params.stopStartTime=this.time[0];
              params.stopEndTime=this.time[1];
-            //  params.stopStartTime=this.time[0];
-            //  params.stopEndTime=this.time[1];
-            //  params.betRules = this.form.options2;
-            //  params.keyRules = this.form.options3;
              fomoSave(params).then(response=>{
                 this.$message({
                     message: '添加成功',
@@ -364,24 +361,24 @@
                     }
                 }
             }else if(type == 2){
-                var index = this.form.options2.indexOf(item);
-                var length=this.form.options2.length;
+                var index = this.form.betRules.indexOf(item);
+                var length=this.form.betRules.length;
                 if (index !== -1){
-                    this.form.options2.splice(index, 1);
+                    this.form.betRules.splice(index, 1);
                     if(index!=length-1){
                         for(var i=index;i<length-1;i++){
-                            this.form.options2[i].optionKey=this.optionArray[i];
+                            this.form.betRules[i].optionKey=this.optionArray[i];
                         }
                     }
                 }
             }else if(type == 3){
-                var index = this.form.options3.indexOf(item);
-                var length=this.form.options3.length;
+                var index = this.form.keyRules.indexOf(item);
+                var length=this.form.keyRules.length;
                 if (index !== -1){
-                    this.form.options3.splice(index, 1);
+                    this.form.keyRules.splice(index, 1);
                     if(index!=length-1){
                         for(var i=index;i<length-1;i++){
-                            this.form.options3[i].optionKey=this.optionArray[i];
+                            this.form.keyRules[i].optionKey=this.optionArray[i];
                         }
                     }
                 }
@@ -391,23 +388,24 @@
         addDomain(type) {
         
             if(type == 1){
-                var length=this.form.options.length;
+                // var length=this.form.options.length;
+                // alert(length)
                 this.form.options.push({
                     optionValue:'' ,
                     optionKey:this.optionArray[length],
                     key: Date.now()
                 });
             }else if(type == 2){
-                var length=this.form.options2.length;
-                this.form.options2.push({
+                var length=this.form.betRules.length;
+                this.form.betRules.push({
                     pool:'' ,
                     rule:'',
                     optionKey:this.optionArray[length],
                     key: Date.now()
                 });
             }else if(type == 3){
-                var length=this.form.options3.length;
-                this.form.options3.push({
+                var length=this.form.keyRules.length;
+                this.form.keyRules.push({
                     pool:'' ,
                     rule:'',
                      optionKey:this.optionArray[length],
@@ -415,29 +413,20 @@
                 });
                
             }
-            
-            
-            // alert(this.form.projectTags)
-          
         },
-        
-        submit1(){
-            var params={userId:this.userId,description:this.intro,ratio:this.ratio,remarks:this.remarks,weight:this.weight};
-            editNetred(params).then(response=>{
-                this.$message({
-                    message: '编辑成功',
-                    type: 'success'
-                });
-                this.intro='';
-                this.dialogFormVisible2=false;
-                this.search(this.pageNo);
-            });
-        },
+       
         edit(row){
-           
-           this.dialogFormVisible=true;
+           this.form.projectTags = [];
            this.form = row;
            this.form.id = row.id;
+           this.form.options = [];
+           for(var i=0;i<row.projectTags.length;i++){
+                this.form.options.push({
+                    optionValue:row.projectTags[i] ,
+                    optionKey:this.optionArray[length],
+                });
+            }
+           this.dialogFormVisible=true;
         },
         getData(params){
             var self=this;

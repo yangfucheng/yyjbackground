@@ -185,6 +185,12 @@ export const constantRouterMap = [
         component: () => import('@/views/hongbao/alHb'),
         meta: { title: '已发红包', icon: 'table' }
       },
+      {
+        path: 'hb-data-list',
+        name: 'alHb',
+        component: () => import('@/views/hongbao/hbDataList'),
+        meta: { title: '红包数据列表', icon: 'table' }
+      },
     ]
   },
   {

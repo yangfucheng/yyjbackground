@@ -307,10 +307,27 @@ export function hbModelList(params) {
   })
 }
 
+export function hbData(params) {
+  return request({
+    url: 'packet/packetData',
+    method: 'get',
+    params: params
+  })
+}
+
 // 红包列表
 export function hblList(params) {
   return request({
     url: '/backend/redPacket/page',
+    method: 'get',
+    params: params
+  })
+}
+
+// 红包详情
+export function hbDetail(params) {
+  return request({
+    url: 'packet/packetDetails',
     method: 'get',
     params: params
   })
@@ -360,4 +377,6 @@ export function fomoSave(params) {
     data: params
   })
 }
+
+
 
